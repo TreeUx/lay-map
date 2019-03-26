@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bx.gis.mapper.SceneryInfoMapper">
+    <select id="querySceneyInfo" resultType="java.lang.String">
+        SELECT
+            com_name
+        FROM
+            bx_commodity
+        WHERE
+            com_name LIKE #{scenery_name}
+--             AND com_level = 5
+            AND parentid = 0
+            AND com_type = 4
+            OR com_type = 5
+    </select>
+    <select id="querySceneryIfExist" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          bx_commodity
+        WHERE
+          com_name = #{scenery_name}
+    </select>
+
+    <!-- 新增采集的景点单元信息 -->
+    <insert id="addNewSceneryInfo" parameterType="com.bx.gis.entity.BxCommodityCommon">
+      INSERT INTO
+        bx_commodity (
+          com_code,com_name,state,city,com_address,com_central,com_duplex,
+          com_begining,com_moment,com_level,com_introduce,com_best,parentid,com_time
+        ) VALUES (
+          #{comCode},#{comName},#{state},#{city},#{comAddress},#{comCentral},#{comDuplex}
+          ,#{comBegining},#{comMoment},#{comLevel},#{comIntroduce},#{comBest},#{parentid},now()
+        )
+    </insert>
+    <!-- 添加景点信息对应的资源特色 -->
+    <insert id="addSceneryType" parameterType="com.bx.gis.entity.BxCommodityCommon">
+        INSERT INTO
+        bx_subjectivity (
+          product_id
+        ) VALUES (
+          #{comCode}
+        )
+    </insert>
+
+    <!-- 根据商品code查询景区商品信息 -->
+    <select id="querySceneryInfoByCode" resultType="java.util.Map">
+        SELECT
+            com_code,
+            com_name,
+            state,
+            city,
+            com_address,
+            com_begining,
+            com_moment,
+            com_best,
+            com_level,
+            com_introduce,
+            com_central
+        FROM
+            bx_commodity
+        WHERE
+            com_code = #{comCode}
+    </select>
+
+    <!-- 删除景区商品表及资源特色表中数据 -->
+    <delete id="deleteNewSceneryInfo" parameterType="java.lang.String">
+      DELETE
+        t,t1
+      FROM
+	    bx_commodity AS t
+      LEFT JOIN
+        bx_subjectivity AS t1
+      ON
+        t.com_code = t1.product_id
+      WHERE
+	    t1.product_id = #{comCode}
+    </delete>
+    <!-- 查询修改时景点修改的名称是否已经存在 -->
+    <select id="querySceneryCount" resultType="java.lang.Integer">
+      SELECT
+          COUNT(1)
+        FROM
+          bx_commodity
+        WHERE
+          com_code = #{arg1}
+          AND com_name = #{arg0}
+    </select>
+
+    <!-- 修改景点信息 -->
+    <update id="updateNewSceneryInfo" parameterType="com.bx.gis.entity.BxCommodityCommon">
+      UPDATE
+        bx_commodity
+      SET
+        com_name = #{comName},
+        state = #{state},
+        city = #{city},
+        com_address = #{comAddress},
+        com_central = #{comCentral},
+        com_begining = #{comBegining},
+        com_moment = #{comMoment},
+        com_best = #{comBest},
+        com_level = #{comLevel},
+        parentid = #{parentid},
+        com_introduce = #{comIntroduce}
+      WHERE
+        com_code = #{comCode}
+    </update>
+
+    <!-- 查询景区出入口 -->
+    <select id="querySceneryEntranceInfos" resultType="java.util.Map">
+      SELECT
+        id "parentid",
+        com_entrance "entrance",
+        com_exit "exit",
+        com_duplex "duplex"
+      FROM
+        bx_commodity
+      WHERE
+        com_name = #{scenery_name}
+--         AND parentid = 0
+--         AND com_type = 4
+--         AND com_level = 5
+    </select>
+
+    <!-- 查询经典下所有新添加的景点数据，并以标记展示出来 -->
+    <select id="queryNewSceneryPartInfo" resultType="java.util.Map">
+        SELECT
+            parentid,
+            com_name,
+            com_central,
+            com_code
+        FROM
+            bx_commodity
+        WHERE
+            parentid = #{parentid}
+        AND com_central != ""
+        AND com_central is not null
+    </select>
+
+    <!-- 查询景点下的所有路线的轨迹信息 -->
+    <select id="querySceneryTrackInfos" resultType="java.util.Map">
+      SELECT
+        id,
+        parentid,
+        com_name,
+        com_track
+      FROM
+        bx_commodity
+      WHERE
+        parentid = #{parentid}
+    </select>
+
+    <!--保存转换后的景点线路坐标信息-->
+    <insert id="addPointlineInfos" parameterType="java.util.Map">
+      INSERT INTO
+        bx_commodity (
+          com_code,com_type,parentid,com_track,com_name,com_begining,com_moment,com_level,state
+        ) VALUES (
+          #{comCode},#{comType},#{parentid},#{transedPointStrs},#{comName},#{comBegining},#{comMoment},#{comLevel},#{state}
+        )
+    </insert>
+
+    <!--校验用户名和密码-->
+    <select id="checkPsw" resultType="java.lang.Integer">
+      SELECT
+          COUNT(1)
+        FROM
+          bx_user
+        WHERE
+          username = #{username}
+          AND password = #{password}
+    </select>
+
+</mapper>

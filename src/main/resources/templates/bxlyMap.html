@@ -1,0 +1,1942 @@
+<!--用于声明改文件为HTML5文件-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body, html, #bx_laymap {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            position: absolute !important;
+            font-family: "微软雅黑";
+        }
+
+        #bx_laymap {
+            float: right;
+            margin-top: 45px !important;
+        }
+
+        #tog:hover {
+            color: #6BFFF3;
+        }
+
+        #tog {
+            color: #3997FF;
+            animation: myfirst 5s;
+            -moz-animation: myfirst 5s; /* Firefox */
+            -webkit-animation: myfirst 5s; /* Safari and Chrome */
+            -o-animation: myfirst 5s; /* Opera */
+        }
+
+        /*搜索提示框样式 start*/
+        .ui-autocomplete {
+            max-height: 140px;
+            overflow-y: auto;
+            /* 防止水平滚动条 */
+            overflow-x: hidden;
+        }
+
+        /* IE 6 不支持 max-height
+         * 我们使用 height 代替，但是这会强制菜单总是显示为那个高度
+         */
+        * html .ui-autocomplete {
+            height: 100px;
+        }
+
+        /*搜索提示框样式 end*/
+
+        /*搜索按钮样式 start*/
+        #fix_scenery_bt {
+            color: white;
+        }
+
+        /*搜索按钮样式 end*/
+
+        /*保存按钮样式 start*/
+        #submitSceneryCollectInfo {
+            color: white;
+        }
+
+        /*保存按钮样式 end*/
+
+        /*景区弹出框按钮样式 start*/
+        .scenery-box-bt {
+            text-align: center;
+            margin-top: 110px;
+            position: fixed;
+            margin-left: 140px;
+        }
+
+        /*景区弹出框按钮样式 end*/
+        @keyframes myfirst {
+            0% {
+                color: #42A1FF;
+            }
+            25% {
+                color: yellow;
+            }
+            50% {
+                color: blue;
+            }
+            100% {
+                color: green;
+            }
+        }
+
+        @-moz-keyframes myfirst /* Firefox */
+        {
+            0% {
+                color: #42A1FF;
+            }
+            25% {
+                color: yellow;
+            }
+            50% {
+                color: blue;
+            }
+            100% {
+                color: green;
+            }
+        }
+
+        @-webkit-keyframes myfirst /* Safari and Chrome */
+        {
+            0% {
+                color: #42A1FF;
+            }
+            25% {
+                color: yellow;
+            }
+            50% {
+                color: blue;
+            }
+            100% {
+                color: green;
+            }
+        }
+
+        @-o-keyframes myfirst /* Opera */
+        {
+            0% {
+                background: #42A1FF;
+            }
+            25% {
+                background: yellow;
+            }
+            50% {
+                background: blue;
+            }
+            100% {
+                background: green;
+            }
+        }
+
+        .amap-rotateRight-active {
+            transform-origin: 50% 50%;
+        / / 设置旋转中心 transform: rotate(45 deg);
+        / / 设置旋转角度，单位deg为度的意思，正数为顺时针旋转，负数为逆时针旋转
+        }
+
+        .amap-rotateLeft-active {
+            transform-origin: 50% 50%;
+        / / 设置旋转中心 transform: rotate(- 45 deg);
+        }
+
+        /*地图infoWindow样式 Start*/
+        .anchorBL {
+            display: none;
+        }
+
+        .BMap_bubble_title {
+            color: black;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .BMap_pop div:nth-child(1) {
+            border-radius: 9px 0 0 0;
+        }
+
+        .BMap_pop div:nth-child(3) div {
+            border-radius: 9px;
+        }
+
+        .BMap_pop div:nth-child(5) {
+            border-radius: 0 0 0 9px;
+        }
+
+        .BMap_pop div:nth-child(5) div {
+            border-radius: 9px;
+        }
+
+        .BMap_pop div:nth-child(7) {
+            border-radius: 0 0 9px 0;
+        }
+
+        .BMap_pop div:nth-child(7) div {
+            border-radius: 9px;
+        }
+
+        /*地图infoWindow样式 End*/
+
+        /*菜单栏样式 Start*/
+        #bx_title {
+            float: left;
+            background-color: #d6d1d1;
+            border-bottom: #2b2b2b;
+            height: 100%;
+            width: 15%;
+        }
+
+        #bx_bannar {
+            text-align: left;
+            padding: 15px;
+            font-family: "Microsoft YaHei UI";
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #2b2b2b;
+            color: #cfcfcf;
+        }
+
+        #bx_bannar > a {
+            float: right;
+            text-decoration: none;
+            color: #cfcfcf;
+            font-size: 14px;
+        }
+
+        #bx_bannar > a:hover {
+            font-size: 16px;
+            color: #0585bb;
+        }
+
+        #bx_title > ul {
+            text-align: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #bx_title > ul > li {
+            list-style: none;
+            padding: 7px;
+            border: 1px solid #c5c5c5;
+        }
+
+        #bx_title > ul > li > a {
+            color: #0968bb;
+            text-decoration: blink;
+            font-family: "Microsoft YaHei UI";
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        #bx_title > ul > li:hover {
+            background-color: #00b7ee;
+        }
+
+        #bx_title > ul > li:active {
+            color: #0c29bb;
+            background: #00b7ee;
+            margin: 3px;
+        }
+
+        #bx_title > ul > li > a:hover {
+            color: #0809bb;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .bx_li_click {
+            background-color: #00b7ee;
+            overflow: hidden;
+        }
+
+        #bx_content {
+            float: left;
+            padding: 10px;
+        }
+
+        .hide_and_show {
+            display: none
+        }
+
+        /*菜单栏样式 End*/
+        .change_map {
+            font-size: 18px;
+            margin-left: 990px;
+            margin-bottom: 10px;
+            position: absolute;
+        }
+
+        /*用户表格样式 Start*/
+        #bx_user_manage {
+            text-align: center;
+        }
+
+        #bxUserManageTable {
+            width: 80%;
+            margin: auto;
+            border: 1px solid darkgrey;
+        }
+
+        #bxUserManageTable > thead > tr {
+            width: 85%;
+            margin: 15px;
+            border: 1px solid darkgrey;
+            height: 40px;
+            font-size: 16px;
+        }
+
+        #bxUserManageTable table {
+            width: 100%;
+            margin: 15px 0
+        }
+
+        #bxUserManageTable th {
+            background-color: #00BFFF;
+            color: #FFFFFF
+        }
+
+        #bxUserManageTable td a {
+            text-decoration: none;
+        }
+
+        #bxUserManageTable, #bxUserManageTable th, #bxUserManageTable td {
+            font-size: 0.95em;
+            text-align: center;
+            padding: 6px;
+            border: 1px solid #dddddd;
+            border-collapse: collapse;
+            margin-top: 100px;
+            margin-left: 250px;
+        }
+
+        #bxUserManageTable tr:nth-child(odd) {
+            background-color: #aae9fe;
+        }
+
+        #bxUserManageTable tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+
+        /*操作按钮样式 Start*/
+        #operate_btn {
+            margin: 20px 0 20px 35px;
+            /*float: left;*/
+            position: fixed;
+            margin-left: 260px;
+        }
+
+        #operate_search {
+            margin: 20px 0 20px 220px;
+            padding: 35px;
+            text-align: left;
+            border: 1px solid #b4b4b4;
+            font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #888;
+        }
+
+        /*操作按钮样式 End*/
+        /* blue */
+        .bootstrap-frm {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 500px;
+            background: #FFF;
+            padding: 14px 8px;
+            font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #888;
+            text-shadow: 1px 1px 1px #FFF;
+            border: 1px solid #DDD;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+
+        .bootstrap-frm:hover {
+            color: #333;
+            background-color: #EBEBEB;
+            border-color: #ADADAD;
+            /*padding: 14px 8px;*/
+        }
+
+        /*用户表格样式 End*/
+
+        /*新增用户模态框样式 Start*/
+        /* 弹窗 (background) */
+        .user_modal {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* 弹窗内容 */
+        .user_modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 35%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* 添加动画 */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        /* 关闭按钮 */
+
+        .user_close {
+            color: #999;
+            /*float: right;*/
+            font-weight: bold;
+            text-decoration: none;
+            font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .user_submit {
+            font-weight: bold;
+            text-decoration: none;
+            color: #03a9f4;
+            margin-right: 15px;
+            font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .user_close:hover,
+        .user_close:focus {
+            color: grey;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user_submit:hover,
+        .user_submit:focus {
+            color: #0c29bb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user_modal-header > span {
+            color: white;
+            float: right;
+            font-size: 20px;
+        }
+
+        h3 {
+            margin-top: 5px;
+        }
+
+        .user_modal-header {
+            padding: 2px 16px;
+            background-color: #00BFFF;
+            color: white;
+        }
+
+        .user_modal-body {
+            padding: 2px 60px;
+        }
+
+        .user_modal-footer {
+            padding: 25px 16px 0px 16px;
+            background-color: white;
+            text-align: right;
+            color: white;
+            height: 50px;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        #content_add_edit > div { /*弹出框内容样式*/
+            padding: 10px;
+        }
+
+        /*新增用户模态框样式 End*/
+
+        /*查询按钮样式*/
+        .search-btn {
+            padding: 10px 14px;
+            margin-left: 60px;
+            background: #81e6f1;
+            font-weight: bold;
+        }
+
+        .li_fld_lah {
+            margin-top: 300px;
+            border: 0;
+            width: 20px;
+            margin-left: 145px;
+            list-style: none;
+        }
+
+        .li_fld_lah a {
+            text-decoration: none;
+            color: grey;
+            position: fixed;
+            z-index: 999;
+            font-size: 25px;
+        }
+
+        .li_fld_lah li:hover {
+            background: #666666;
+        }
+
+        /*分页 Start*/
+        #ele {
+            padding: 20px;
+            float: right
+        }
+
+        .Pagination ul {
+            list-style: none;
+        }
+
+        .Pagination .total_num, .first_page, .prepage, .list_box, .nextpage, .last_page, .total_page, .redir {
+            float: left;
+        }
+
+        .Pagination ul li {
+            float: left;
+            background-color: #ccc;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 22px;
+            width: 22px;
+            height: 22px;
+            font-size: 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            color: #8b8b8b
+        }
+
+        .Pagination ul li:hover {
+            background-color: #58acf4;
+            color: #fff;
+        }
+
+        .Pagination .total_num {
+            margin: 0 5px;
+        }
+
+        .Pagination .total_num i {
+            font-style: normal;
+        }
+
+        .Pagination .list_box {
+            width: 320px;
+            overflow: hidden;
+            position: relative;
+            height: 32px;
+        }
+
+        .Pagination .list_box ul {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .Pagination .prepage {
+            background-color: #ccc;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            color: #8b8b8b
+        }
+
+        .Pagination .prepage:hover {
+            background-color: #58acf4;
+            color: #fff;
+        }
+
+        .Pagination .nextpage {
+            background-color: #ccc;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            color: #8b8b8b
+        }
+
+        .Pagination .nextpage:hover {
+            background-color: #58acf4;
+            color: #fff;
+        }
+
+        .Pagination .first_page {
+            background-color: #ccc;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            color: #8b8b8b
+        }
+
+        .Pagination .first_page:hover {
+            background-color: #58acf4;
+            color: #fff;
+        }
+
+        .Pagination .last_page {
+            background-color: #ccc;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            color: #8b8b8b
+        }
+
+        .Pagination .last_page:hover {
+            background-color: #58acf4;
+            color: #fff;
+        }
+
+        .Pagination .redir {
+            background-color: #58acf4;
+            color: #fff;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .Pagination .redir:hover {
+            opacity: 0.8;
+        }
+
+        .Pagination input {
+            width: 50px;
+            height: 25px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            text-indent: 5px;
+            margin: 0 5px;
+        }
+
+        .Pagination .short {
+            background-color: #fff;
+            cursor: default;
+        }
+
+        .Pagination .short:hover {
+            background-color: #fff;
+            color: #8b8b8b;
+        }
+
+        .Pagination_active {
+            background-color: #58acf4 !important;
+            color: #fff !important;
+        }
+
+        /*分页 End*/
+
+        /*右键菜单 Start*/
+        .contextmenu {
+            position: absolute;
+            border-top: 1px solid #adbfe4;
+            border-left: 1px solid #adbfe4;
+            border-right: 1px solid #8ba4d8;
+            border-bottom: 1px solid #8ba4d8;
+            padding: 0 0;
+            margin: 0;
+            z-index: 9;
+            background-color: white;
+            width: 140px;
+            border-radius: 8px;
+        }
+
+        .contextmenu ul {
+            padding: 0;
+            margin: 4px 0;
+            list-style: none;
+        }
+
+        .contextmenu > ul > li {
+            padding: 2px 10px;
+        }
+
+        .contextmenu > ul > li > a {
+            font-size: 14px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .contextmenu > ul > li:hover {
+            background-color: #e6e6e6;
+        }
+
+        .contextmenu > ul > li > a:hover {
+            color: #27b3ff;
+        }
+
+        /*右键菜单 End*/
+
+        /*特色等级*/
+        .cstc{color:red;cursor: pointer;line-height: 36px}
+        .options{margin-top:1rem;padding:1rem}
+        .opselect>li{display:flex;justify-content: space-around;}
+        .imgload{text-align: center;display:none} .imgload img{width:2rem}
+        .oplever{margin:0}
+        .oplever>li{ padding:0 1rem;display:inline-flex;justify-content: space-between;width:100%;height:40px;line-height: 40px;}
+        .oplever>li>div{}
+        .starbox{width:75%;margin:0;}
+        .starbox>li{display:inline-block;width:15%;text-align: center;}
+        .starbox img{width:65%}
+
+        /*必填项弹出框样式修改 Start*/
+        .jconfirm.jconfirm-white .jconfirm-box {
+            width: 270px!important;
+        }
+        /*必填项弹出框样式修改 End*/
+    </style>
+    <!--OpenLayers地图 Start-->
+    <!--<script type="text/javascript" src="http://www.openlayers.cn/olapi/OpenLayers.js"></script>-->
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
+    <!--OpenLayers地图 End-->
+    <!-- 加载高德地图JSAPI脚本 -->
+    <script src="https://webapi.amap.com/maps?v=1.4.12&key=a96f1485c85033ab8c2e9b53538d4d54&plugin=AMap.PlaceSearch"></script>
+    <!--加载百度地图脚本-->
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=0NIuUlCTTGztFjaP8IPfhW12glBlcxH5"></script>
+
+
+    <!--<script th:src="@{/webjars/jquery/jquery.min.js}"></script>-->
+    <!--如果未引入webjars-locator，相关静态资源需要版本号，此处不便于升级-->
+    <!--因为额外引入了webjars-locator，所以相关静态资源的引入可省略版本号便于升级-->
+    <!--<link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />-->
+    <!--<link th:href="@{/webjars/bootstrap-select/dist/css/bootstrap-select.min.css}" rel="stylesheet" />-->
+    <!--<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--swal提示框需要的样式-->
+    <!--用以解决swal is not define问题-->
+    <script th:src="@{/webjars/sweetalert/sweetalert.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/sweetalert/sweetalert.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/flatpickr/dist/flatpickr.css}">
+    <script th:src="@{/webjars/flatpickr/dist/flatpickr.js}"></script>
+    <!-- jquery-confirm 消息弹出框插件 -->
+    <link rel="stylesheet" th:href="@{/css/jquery-confirm.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery-confirm.min.css}">
+    <link rel="stylesheet" th:href="@{/css/lay-model.css}">
+    <script th:src="@{/js/jquery-confirm.min.js}" type="text/javascript"></script>
+
+    <!-- jquery多图片上传 -->
+    <link rel="stylesheet" th:href="@{/css/webuploader/webuploader.css}">
+    <script type="text/javascript" th:src="@{/js/webuploader/webuploader.js}"></script>
+
+    <!--jqueryui-->
+    <link rel="stylesheet" th:href="@{/css/jqueryui/jquery-ui.css}" defer="defer">
+    <link rel="stylesheet" th:href="@{/css/jqueryui/jquery-ui.structure.css}" defer="defer">
+    <link rel="stylesheet" th:href="@{/css/jqueryui/jquery-ui.theme.css}" defer="defer">
+    <script th:src="@{/js/jqueryui/jquery-ui.js}" defer="defer"></script>
+
+    <!--添加景点弹出框 Start-->
+    <link rel="stylesheet" th:href="@{/css/layinfo.css}">
+    <!--添加景点弹出框 End-->
+
+    <!--特色等级 Start-->
+    <!--<link rel="stylesheet" th:href="@{/css/H-ui.min.css}" defer="defer">-->
+    <script th:src="@{/js/H-ui.js}" type="text/javascript"></script>
+    <!--特色等级 End-->
+
+
+    <!-- 引入项目js -->
+    <script th:src="@{/js/bxkj/common.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bxkj/GlobalCity.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bxkj/bxMapInfo.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bxkj/bxGdMap.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bxkj/userManage.js}" type="text/javascript"></script>
+    <script th:src="@{/js/paging.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bxkj/mapAnimate.js}" type="text/javascript"></script>
+    <!--openlayer Start-->
+    <!--openlayer End-->
+    <!--添加景点弹出框 Js-->
+    <script th:src="@{/js/bxkj/popup.js}" type="text/javascript"></script>
+
+    <!--DataTables-->
+    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+    <title th:text="${name}"></title>
+</head>
+
+<body style="background-color: #f7f1f1">
+<!--公共标题栏 Start-->
+<div id="bx_bannar">
+    启岸伴行计调管理系统
+    <a href="logout">退出</a>
+</div>
+<div id="bx_title">
+    <ul id="bx_title_ul">
+        <li index="1" class="bx_li_click"><a href="javascript:;">✧ 数据采集 ✧</a></li>
+        <li index="2"><a href="javascript:;">✧ 账号管理 ✧</a></li>
+    </ul>
+    <div>
+        <ul>
+            <li class="li_fld_lah"><a href="javascript:;"> 《 </a></li>
+        </ul>
+    </div>
+</div>
+
+<!--公共标题栏 End-->
+
+<!--采集工具 Start-->
+<div id="bx_content">
+    <div id="scenery_box" style="float: left;">
+        <!--上传图片-->
+        <!--dom结构部分-->
+        <div id="uploader-images">
+            <!--用来存放item-->
+            <div id="fileList" class="uploader-list">
+            </div>
+            <div>
+                <div id="filePicker" class="webuploader-container">
+                    <div class="webuploader-pick">选择图片</div>
+                    <input type="file" name="file" class="webuploader-element-invisible"
+                           accept="image/jpg,jpeg,png">
+                </div>
+                <button id="ctlBtn" class="btn btn-default" style="padding: 6px 12px;">开始上传</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 景点搜索，地图展示 -->
+    <div id="div_name" style="font-size: 16px;">
+        <div class="ui-widget" style="position:fixed;float: left;margin-left: 210px;">
+            <label for="input_name">景点名称: </label>
+            <input type="text" id="input_name" placeholder="请输入景点名称"
+                   style="background-color: #dcd5d5;border: 1px solid #d0c0c0;"/>
+            <input id="fix_scenery_bt" type="button" class="webuploader-container" onclick="queryMapInfo()" value="搜索"/>
+        </div>
+    </div>
+    <!-- 折叠、展开div -->
+    <div class="change_map">
+        <select id="map_type_sel" class="selectpicker">
+            <option value="bd-map">百度地图</option>
+            <option value="gd-map">高德地图</option>
+            <option value="gg-map">谷歌地图</option>
+        </select>
+        <input id="show_overlay_bt" type="button" class="webuploader-container" showAndHide="hide"
+               onclick="showMapOverlay(this)" value="图层"/>
+        <button id="tog" type="button" class="btn webuploader-container" style="background: #81e6f1">折叠</button>
+        <!--清除浮动-->
+        <div style="clear: both"></div>
+    </div>
+    <!-- 地图OpenLayers -->
+    <div id="bx_laymap" class="bx_laymap"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content" style="width:160px; height:90px;"></div>
+    </div>
+
+    <!-- 新增景点模态框（Modal） -->
+    <div class="modal fade" id="myAddSceneryInfoModal" tabindex="-1" role="dialog" data-backdrop="false"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        新增景点单元
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <form id="addSceneryModalForm" action="" class="form-horizontal">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="scenery_name" class="control-label"><span
+                                            style="color: red;"> * </span>名称：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input id="scenery_name" name="scenery_name" type="text" placeholder="请输入景点名称"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="continents" class="control-label"><span
+                                            style="color: red;"> * </span>地区：</label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select id="continents" name="continents" class="selectpicker">
+                                        <!--<option value="1">欧洲</option>-->
+                                        <!--<option value="0" selected>亚洲</option>-->
+                                        <!--<option value="2">非洲</option>-->
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select id="state" name="state" class="selectpicker">
+                                        <!--<option value="0" selected>中国</option>-->
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select id="city" name="city" class="selectpicker">
+                                        <!--<option value="" selected>请选择城市</option>-->
+                                        <!--<option value="0">广东</option>-->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="scenery_address" class="control-label"><span
+                                            style="color: red;"> * </span>详细地址：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input id="scenery_address" name="scenery_address" type="text"
+                                           placeholder="请输入景区详细地址"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="scenery_type" class="control-label"><span
+                                            style="color: red;"> * </span>资源特色：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <a href="javascript:;" onclick="showStarModal();">点击选择</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="scenery_type" class="control-label"><span
+                                            style="color: red;"> * </span>类型：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select id="scenery_type" name="scenery_type" class="selectpicker">
+                                        <option value="1">1. 吃</option>
+                                        <option value="2">2. 住</option>
+                                        <option value="3">3. 行</option>
+                                        <option value="4" selected>4. 游</option>
+                                        <option value="5">5. 娱</option>
+                                        <option value="6">6. 购</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="" class="control-label">地图经纬度：</label>
+                                </div>
+                                <div class="col-sm-9"><label id="location"> </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="addPoints" class="row" type="hidden">
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3" style="float: left;">
+                                    <label for="scenery_start_time scenery_end_time" class="control-label"><span
+                                            style="color: red;"> * </span>开放时段：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input id="scenery_start_time" name="scenery_start_time" type="time"/> ~ &nbsp;&nbsp;&nbsp;
+                                    <input id="scenery_end_time" name="scenery_end_time" type="time"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3" style="float: left;">
+                                    <label for="com_best" class="control-label"><span style="color: red;"> * </span>游玩时间：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input id="com_best" name="com_best" type="text"
+                                           maxlength="8" placeholder="请输入游玩时间"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3" style="float: left;">
+                                    <label for="" class="control-label"><span
+                                            style="color: red;"> * </span>伴行级别：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select id="bx_level" name="bx_level" class="selectpicker">
+                                        <option value="6" selected>6</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="" class="control-label">备注：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea id="scenery_remark" name="scenery_remark" rows="3" cols="20"> </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-3" style="float: left;">
+                                    <label class="control-label"></span>上传图片：</label>
+                                </div>
+                                <!--图片上传开始部分-->
+                                <div id="uploader-image">
+                                <div id="filePicker1">选择图片</div>
+                                <div id="fileList1" class="uploader-list" style="padding: 5px;"></div>
+                                </div>
+                                <!--图片上传结束部分-->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button id="submitSceneryCollectInfo" type="submit" class="btn btn-primary" clicked="0" onclick="submitSceneryInfo(this);">
+                        提交
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+</div>
+<!--采集工具 End-->
+
+<!--账户管理 Start-->
+<div id="bx_user_manage" class="hide_and_show">
+    <div id="operate_search">
+        <label>用户名：</label>
+        <input id="search_username" style="width: 125px;height: 20px;" placeholder="请输入用户名">
+        <input id="search_userId" type="hidden">
+        <input id="search_traId" type="hidden">
+        <input id="search_opDeptid" type="hidden">
+        <input id="search_operatorId" type="hidden">
+        <button class="bootstrap-frm search-btn" onclick="searchUserInfo();">查询</button>
+    </div>
+    <div id="operate_btn">
+        <button class="bootstrap-frm" onclick="addOrEditNewUser(this)">新增用户</button>
+        <button class="bootstrap-frm" onclick="batchDelUsersInfo()">批量删除</button>
+    </div>
+    <table class="display" id="bxUserManageTable">
+        <thead>
+        <tr>
+            <th><input id="checkAll" type="checkbox" onclick="siteChooseOrNoChoose(this)"/></th>
+            <th>用户id</th>
+            <th>用户</th>
+            <th>邮箱</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <div id="ele">
+        <div class="Pagination"></div>
+    </div>
+</div>
+<!--账户管理 End-->
+
+<!--新增和修改模态框 Start-->
+<!-- 模态框（Modal） -->
+<div id="addOrEditModal" class="user_modal">
+    <!-- 弹窗内容 -->
+    <div class="user_modal-content">
+        <div class="user_modal-header">
+            <span class="user_close" onclick="user_close()">×</span>
+            <h3>Title</h3>
+        </div>
+        <div class="user_modal-body">
+
+        </div>
+        <div class="user_modal-footer">
+            <a href="javascript:;" class="user_submit" onclick="addOrEditUserInfo()">提交</a>
+            <a href="javascript:;" class="user_close" onclick="user_close()">取消</a>
+        </div>
+    </div>
+
+</div>
+<!--新增和修改模态框 End-->
+
+<!--清除浮动-->
+<div style="clear: both"></div>
+
+<!-- 特色等级 -->
+<div id="modal-cstc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content radius">
+            <div class="modal-header">
+                <h3 class="modal-title"><i style="color:red;">*</i> 特色等级
+                <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:;">×</a>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="options">
+                    <ul class="am-list oplever">
+                        <li class="fashion">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="0" class="inpt_box" checked/>
+                                    时尚性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="relex">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="1" class="inpt_box" checked/>
+                                    休闲性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="nos">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="2" class="inpt_box" checked/>
+                                    历史性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="romantic">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="3" class="inpt_box" checked />
+                                    浪漫性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="parentage">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    亲子性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="natural">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    天然性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="special">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    新奇性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="excit">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    刺激性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="culture">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    人文性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="watching">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    舒适性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="participate">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    参与性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="am-list oplever">
+                        <li class="symbol">
+                            <div>
+                                <label class="am-checkbox-inline">
+                                    <input type="checkbox" value="4" class="inpt_box" checked />
+                                    独特性
+                                </label>
+                            </div>
+                            <ul class="starbox">
+                                <li value="1"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="2"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="3" class="axis"><img src="/images/shoucang.png" alt="" /></li>
+                                <li value="4"><img src="/images/shoucang1.png" alt="" /></li>
+                                <li value="5"><img src="/images/shoucang1.png" alt="" /></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary save-cstc">确定</button>
+                <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /*特色等级选取*/
+
+    $(".inpt_box").on("change",function(){//复选框改变事件
+        var selnum=$(".options .inpt_box:checked").length;
+        var i=$(this).index(".inpt_box");
+        if(!$(this).prop("checked")){
+            $(this).parent().parent().parent().find("img").attr("src","/images/shoucang1.png")
+            $(this).parent().parent().parent().find(".starbox .axis").removeClass('axis')
+        }
+        if($(this).prop("checked")){
+            $(".options .oplever").eq(i).find(".starbox li").eq(2).find("img").attr("src","/images/shoucang.png");
+            $(".options .oplever").eq(i).find(".starbox li").eq(2).addClass("axis");
+            $(".options .oplever").eq(i).find(".starbox li").eq(2).prevAll().find("img").attr("src","/images/shoucang.png");
+        }
+
+    })
+    $(".starbox>li").on("click",function(){//点击星星
+        var ipt=$(this).parent().parent().find(".inpt_box");
+        var selnum=$(".options .inpt_box:checked").length;
+        if($(ipt).prop("checked")){
+            if(!$(this).is(".axis")){
+                $(this).removeClass("axis").siblings("li").removeClass("axis")
+                $(this).addClass("axis");
+                $(this).siblings("li").find("img").attr("src","/images/shoucang1.png");
+                $(this).find("img").attr("src","/images/shoucang.png");
+                $(this).prevAll().find("img").attr("src","/images/shoucang.png");
+            }else if($(this).is(".axis")&&$(this).val()!="1"){
+                $(this).removeClass("axis").siblings("li").removeClass("axis")
+                $(this).prev().addClass("axis");
+                $(this).find("img").attr("src","/images/shoucang1.png");
+                $(this).siblings("li").find("img").attr("src","/images/shoucang1.png");
+                //$(this).find("img").attr("src","/images/shoucang.png");
+                $(this).prevAll().find("img").attr("src","/images/shoucang.png");
+            }else if($(this).is(".axis")&&$(this).val()=="1"){
+                return
+            }
+
+        }
+    })
+    var fea={
+        //"com_code":com_code,             //      商品编号
+        "epidemic":$(".fashion .axis").val()||0,       //int   流行性-对应等级
+        "recreational":$(".relex .axis").val()||0,   //int   休闲性-对应等级
+        "nostalgic":$(".nos .axis").val()||0,      //int   怀旧性-对应等级
+        "romantic":$(".romantic .axis").val()||0,       //int   浪漫性-对应等级
+        "parent_child":$(".parentage .axis").val()||0,   //int   亲子性-对应等级
+        "naturalness":$(".natural .axis").val()||0,    //int   自然性-对应等级
+        "singularity":$(".special .axis").val()||0,    //int   奇特性-对应等级
+        "excitement":$(".excit .axis").val()||0,     //int   刺激性-对应等级
+        "culture":$(".culture .axis").val()||0,        //int   文化性-对应等级
+        "ornamental":$(".watching .axis").val()||0,     //int   观赏性-对应等级
+        "participatory":$(".participate .axis").val()||0,  //int   参与性-对应等级
+        "iconic":$(".symbol .axis").val()||0          //int   标志性:对应等级
+    }
+
+    /*特色等级选取 End*/
+
+</script>
+
+<script type="text/javascript">
+    /*高德地图 Start*/
+    var AMapLayer = new ol.layer.Tile({ //高德地图
+        source: new ol.source.XYZ({
+            url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
+        })
+    });
+    /*高德地图 End*/
+    /*google地图 Start*/
+    var googleMapLayer = new ol.layer.Tile({ //google地图
+        source: new ol.source.XYZ({
+            url: 'http://www.google.cn/maps/vt/pb=!1m4!1m3!1i{z}!2i{x}!3i{y}!2m3!1e0!2sm!3i380072576!3m8!2szh-CN!3scn!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0'
+        })
+    });
+    /*google地图 End*/
+    /*百度地图 Start*/
+    var forEachPoint = function (func) {
+        return function (input, opt_output, opt_dimension) {
+            var len = input.length;
+            var dimension = opt_dimension ? opt_dimension : 2;
+            var output;
+            if (opt_output) {
+                output = opt_output;
+            } else {
+                if (dimension !== 2) {
+                    output = input.slice();
+                } else {
+                    output = new Array(len);
+                }
+            }
+            for (var offset = 0; offset < len; offset += dimension) {
+                func(input, output, offset)
+            }
+            return output;
+        };
+    };
+
+    var sphericalMercator = {}
+
+    var RADIUS = 6378137;
+    var MAX_LATITUDE = 85.0511287798;
+    var RAD_PER_DEG = Math.PI / 180;
+
+    sphericalMercator.forward = forEachPoint(function (input, output, offset) {
+        var lat = Math.max(Math.min(MAX_LATITUDE, input[offset + 1]), -MAX_LATITUDE);
+        var sin = Math.sin(lat * RAD_PER_DEG);
+
+        output[offset] = RADIUS * input[offset] * RAD_PER_DEG;
+        output[offset + 1] = RADIUS * Math.log((1 + sin) / (1 - sin)) / 2;
+    });
+
+    sphericalMercator.inverse = forEachPoint(function (input, output, offset) {
+        output[offset] = input[offset] / RADIUS / RAD_PER_DEG;
+        output[offset + 1] = (2 * Math.atan(Math.exp(input[offset + 1] / RADIUS)) - (Math.PI / 2)) / RAD_PER_DEG;
+    });
+
+
+    var baiduMercator = {}
+
+    var MCBAND = [12890594.86, 8362377.87,
+        5591021, 3481989.83, 1678043.12, 0];
+
+    var LLBAND = [75, 60, 45, 30, 15, 0];
+
+    var MC2LL = [
+        [1.410526172116255e-8, 0.00000898305509648872, -1.9939833816331,
+            200.9824383106796, -187.2403703815547, 91.6087516669843,
+            -23.38765649603339, 2.57121317296198, -0.03801003308653,
+            17337981.2],
+        [-7.435856389565537e-9, 0.000008983055097726239,
+            -0.78625201886289, 96.32687599759846, -1.85204757529826,
+            -59.36935905485877, 47.40033549296737, -16.50741931063887,
+            2.28786674699375, 10260144.86],
+        [-3.030883460898826e-8, 0.00000898305509983578, 0.30071316287616,
+            59.74293618442277, 7.357984074871, -25.38371002664745,
+            13.45380521110908, -3.29883767235584, 0.32710905363475,
+            6856817.37],
+        [-1.981981304930552e-8, 0.000008983055099779535, 0.03278182852591,
+            40.31678527705744, 0.65659298677277, -4.44255534477492,
+            0.85341911805263, 0.12923347998204, -0.04625736007561,
+            4482777.06],
+        [3.09191371068437e-9, 0.000008983055096812155, 0.00006995724062,
+            23.10934304144901, -0.00023663490511, -0.6321817810242,
+            -0.00663494467273, 0.03430082397953, -0.00466043876332,
+            2555164.4],
+        [2.890871144776878e-9, 0.000008983055095805407, -3.068298e-8,
+            7.47137025468032, -0.00000353937994, -0.02145144861037,
+            -0.00001234426596, 0.00010322952773, -0.00000323890364,
+            826088.5]];
+
+    var LL2MC = [
+        [-0.0015702102444, 111320.7020616939, 1704480524535203,
+            -10338987376042340, 26112667856603880,
+            -35149669176653700, 26595700718403920,
+            -10725012454188240, 1800819912950474, 82.5],
+        [0.0008277824516172526, 111320.7020463578, 647795574.6671607,
+            -4082003173.641316, 10774905663.51142, -15171875531.51559,
+            12053065338.62167, -5124939663.577472, 913311935.9512032,
+            67.5],
+        [0.00337398766765, 111320.7020202162, 4481351.045890365,
+            -23393751.19931662, 79682215.47186455, -115964993.2797253,
+            97236711.15602145, -43661946.33752821, 8477230.501135234,
+            52.5],
+        [0.00220636496208, 111320.7020209128, 51751.86112841131,
+            3796837.749470245, 992013.7397791013, -1221952.21711287,
+            1340652.697009075, -620943.6990984312, 144416.9293806241,
+            37.5],
+        [-0.0003441963504368392, 111320.7020576856, 278.2353980772752,
+            2485758.690035394, 6070.750963243378, 54821.18345352118,
+            9540.606633304236, -2710.55326746645, 1405.483844121726,
+            22.5],
+        [-0.0003218135878613132, 111320.7020701615, 0.00369383431289,
+            823725.6402795718, 0.46104986909093, 2351.343141331292,
+            1.58060784298199, 8.77738589078284, 0.37238884252424, 7.45]];
+
+
+    function getRange(v, min, max) {
+        v = Math.max(v, min);
+        v = Math.min(v, max);
+
+        return v;
+    }
+
+    function getLoop(v, min, max) {
+        var d = max - min;
+        while (v > max) {
+            v -= d;
+        }
+        while (v < min) {
+            v += d;
+        }
+
+        return v;
+    }
+
+    function convertor(input, output, offset, table) {
+        var px = input[offset];
+        var py = input[offset + 1];
+        var x = table[0] + table[1] * Math.abs(px);
+        var d = Math.abs(py) / table[9];
+        var y = table[2]
+            + table[3]
+            * d
+            + table[4]
+            * d
+            * d
+            + table[5]
+            * d
+            * d
+            * d
+            + table[6]
+            * d
+            * d
+            * d
+            * d
+            + table[7]
+            * d
+            * d
+            * d
+            * d
+            * d
+            + table[8]
+            * d
+            * d
+            * d
+            * d
+            * d
+            * d;
+
+        output[offset] = x * (px < 0 ? -1 : 1);
+        output[offset + 1] = y * (py < 0 ? -1 : 1);
+    }
+
+    baiduMercator.forward = forEachPoint(function (input, output, offset) {
+        var lng = getLoop(input[offset], -180, 180);
+        var lat = getRange(input[offset + 1], -74, 74);
+
+        var table = null;
+        var j;
+        for (j = 0; j < LLBAND.length; ++j) {
+            if (lat >= LLBAND[j]) {
+                table = LL2MC[j];
+                break;
+            }
+        }
+        if (table === null) {
+            for (j = LLBAND.length - 1; j >= 0; --j) {
+                if (lat <= -LLBAND[j]) {
+                    table = LL2MC[j];
+                    break;
+                }
+            }
+        }
+        output[offset] = lng;
+        output[offset + 1] = lat;
+        convertor(output, output, offset, table);
+    });
+
+    baiduMercator.inverse = forEachPoint(function (input, output, offset) {
+        var y_abs = Math.abs(input[offset + 1]);
+
+        var table = null;
+        for (var j = 0; j < MCBAND.length; j++) {
+            if (y_abs >= MCBAND[j]) {
+                table = MC2LL[j];
+                break;
+            }
+        }
+
+        convertor(input, output, offset, table);
+    });
+
+    var gcj02 = {}
+
+    var PI = Math.PI;
+    var AXIS = 6378245.0;
+    var OFFSET = 0.00669342162296594323;  // (a^2 - b^2) / a^2
+
+    function delta(wgLon, wgLat) {
+        var dLat = transformLat(wgLon - 105.0, wgLat - 35.0);
+        var dLon = transformLon(wgLon - 105.0, wgLat - 35.0);
+        var radLat = wgLat / 180.0 * PI;
+        var magic = Math.sin(radLat);
+        magic = 1 - OFFSET * magic * magic;
+        var sqrtMagic = Math.sqrt(magic);
+        dLat = (dLat * 180.0) / ((AXIS * (1 - OFFSET)) / (magic * sqrtMagic) * PI);
+        dLon = (dLon * 180.0) / (AXIS / sqrtMagic * Math.cos(radLat) * PI);
+        return [dLon, dLat];
+    }
+
+    function outOfChina(lon, lat) {
+        if (lon < 72.004 || lon > 137.8347) {
+            return true;
+        }
+        if (lat < 0.8293 || lat > 55.8271) {
+            return true;
+        }
+        return false;
+    }
+
+    function transformLat(x, y) {
+        var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+        ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0;
+        ret += (20.0 * Math.sin(y * PI) + 40.0 * Math.sin(y / 3.0 * PI)) * 2.0 / 3.0;
+        ret += (160.0 * Math.sin(y / 12.0 * PI) + 320 * Math.sin(y * PI / 30.0)) * 2.0 / 3.0;
+        return ret;
+    }
+
+    function transformLon(x, y) {
+        var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+        ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0;
+        ret += (20.0 * Math.sin(x * PI) + 40.0 * Math.sin(x / 3.0 * PI)) * 2.0 / 3.0;
+        ret += (150.0 * Math.sin(x / 12.0 * PI) + 300.0 * Math.sin(x / 30.0 * PI)) * 2.0 / 3.0;
+        return ret;
+    }
+
+    gcj02.toWGS84 = forEachPoint(function (input, output, offset) {
+        var lng = input[offset];
+        var lat = input[offset + 1];
+        if (!outOfChina(lng, lat)) {
+            var deltaD = delta(lng, lat);
+            lng = lng - deltaD[0];
+            lat = lat - deltaD[1];
+        }
+        output[offset] = lng;
+        output[offset + 1] = lat;
+    });
+
+    gcj02.fromWGS84 = forEachPoint(function (input, output, offset) {
+        var lng = input[offset];
+        var lat = input[offset + 1];
+        if (!outOfChina(lng, lat)) {
+            var deltaD = delta(lng, lat);
+            lng = lng + deltaD[0];
+            lat = lat + deltaD[1];
+        }
+        output[offset] = lng;
+        output[offset + 1] = lat;
+    });
+
+    var bd09 = {}
+
+    var PI = Math.PI;
+    var X_PI = PI * 3000 / 180;
+
+    function toGCJ02(input, output, offset) {
+        var x = input[offset] - 0.0065;
+        var y = input[offset + 1] - 0.006;
+        var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * X_PI);
+        var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * X_PI);
+        output[offset] = z * Math.cos(theta);
+        output[offset + 1] = z * Math.sin(theta);
+        return output;
+    }
+
+    function fromGCJ02(input, output, offset) {
+        var x = input[offset];
+        var y = input[offset + 1];
+        var z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * X_PI);
+        var theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * X_PI);
+        output[offset] = z * Math.cos(theta) + 0.0065;
+        output[offset + 1] = z * Math.sin(theta) + 0.006;
+        return output;
+    }
+
+    bd09.toWGS84 = function (input, opt_output, opt_dimension) {
+        var output = forEachPoint(toGCJ02)(input, opt_output, opt_dimension);
+        return gcj02.toWGS84(output, output, opt_dimension);
+    };
+
+    bd09.fromWGS84 = function (input, opt_output, opt_dimension) {
+        var output = gcj02.fromWGS84(input, opt_output, opt_dimension);
+        return forEachPoint(fromGCJ02)(output, output, opt_dimension);
+    };
+
+    var projzh = {}
+
+    projzh.smerc2bmerc = function (input, opt_output, opt_dimension) {
+        var output = sphericalMercator.inverse(input, opt_output, opt_dimension);
+        output = bd09.fromWGS84(output, output, opt_dimension);
+        return baiduMercator.forward(output, output, opt_dimension);
+    };
+
+    projzh.bmerc2smerc = function (input, opt_output, opt_dimension) {
+        var output = baiduMercator.inverse(input, opt_output, opt_dimension);
+        output = bd09.toWGS84(output, output, opt_dimension);
+        return sphericalMercator.forward(output, output, opt_dimension);
+    };
+
+    projzh.bmerc2ll = function (input, opt_output, opt_dimension) {
+        var output = baiduMercator.inverse(input, opt_output, opt_dimension);
+        return bd09.toWGS84(output, output, opt_dimension);
+    };
+
+    projzh.ll2bmerc = function (input, opt_output, opt_dimension) {
+        var output = bd09.fromWGS84(input, opt_output, opt_dimension);
+        return baiduMercator.forward(output, output, opt_dimension);
+    };
+
+    projzh.ll2smerc = sphericalMercator.forward;
+    projzh.smerc2ll = sphericalMercator.inverse;
+
+
+    var extent = [72.004, 0.8293, 137.8347, 55.8271];
+
+    var baiduMercatorProj = new ol.proj.Projection({
+        code: 'baidu',
+        extent: ol.extent.applyTransform(extent, projzh.ll2bmerc),
+        units: 'm'
+    });
+
+    ol.proj.addProjection(baiduMercatorProj);
+    ol.proj.addCoordinateTransforms('EPSG:4326', baiduMercatorProj, projzh.ll2bmerc, projzh.bmerc2ll);
+    ol.proj.addCoordinateTransforms('EPSG:3857', baiduMercatorProj, projzh.smerc2bmerc, projzh.bmerc2smerc);
+
+    var bmercResolutions = new Array(19);
+    for (var i = 0; i < 19; ++i) {
+        bmercResolutions[i] = Math.pow(2, 18 - i);
+    }
+    var baiduMapLayer = new ol.layer.Tile({
+        source: new ol.source.XYZ({
+            projection: 'baidu',
+            maxZoom: 21,
+            tileUrlFunction: function (tileCoord) {
+                var x = tileCoord[1];
+                var y = tileCoord[2];
+                var z = tileCoord[0];
+                return "http://api0.map.bdimg.com/customimage/tile?x=" + x
+                    + "&y=" + y + "&z=" + z
+                    + "&udt=20170908&scale=2&ak=0NIuUlCTTGztFjaP8IPfhW12glBlcxH5"
+                    + "&styles=pl&t = 1505487396397";
+                ;
+            },
+            tileGrid: new ol.tilegrid.TileGrid({
+                resolutions: bmercResolutions,
+                origin: [0, 0],
+                extent: ol.extent.applyTransform(extent, projzh.ll2bmerc),
+                tileSize: [256, 256]
+            })
+        })
+    });
+    /*百度地图 End*/
+
+    /*调用地图 Start*/
+    var targetStr = baiduMapLayer
+    var map;
+    var init_flag = true
+    if (init_flag) {
+        map = new ol.Map({ //默认调用百度地图
+            target: 'bx_laymap',
+            layers: [targetStr],//AMapLayer, baiduMapLayer, googleMapLayer
+            view: new ol.View({
+                center: ol.proj.fromLonLat([114.065127, 22.548189]),
+                zoom: 14
+            })
+        });
+        init_flag = false
+        console.log("初始化地图")
+    }
+    /*调用地图 End*/
+</script>
+<script type="text/javascript">
+    $(".li_fld_lah a").click(function () { //展开折叠左侧标题栏
+        var text = $(".li_fld_lah a").text().trim()
+        if (text == "《") { //折叠
+            $("#bx_title").css("width", "0")
+            $("#bx_title").css("margin-left", "-165px")
+            $(".li_fld_lah a").css("margin-top", "-205px")
+            $("#bx_laymap").css("margin-left", "-10px")
+            $(".li_fld_lah a").text("》")
+        } else {
+            $("#bx_title").css("width", "15%") //展开
+            $("#bx_title").css("margin-left", "0")
+            $(".li_fld_lah a").css("margin-top", "0")
+            $(".li_fld_lah a").css("margin-left", "0")
+            $(".li_fld_lah a").text("《")
+        }
+    })
+
+    //上传图片
+    // 初始化Web Uploader
+    var $ = jQuery,
+        $list = $('#fileList'),
+        ratio = window.devicePixelRatio || 1,
+        // 设置预览图的宽高
+        thumbnailWidth = 120 * ratio,
+        thumbnailHeight = 100 * ratio,
+        $btn = $('#ctlBtn'),
+        state = 'pending',
+        // Web Uploader实例
+        uploader;
+    // 创建Web Uploader实例
+    uploader = WebUploader.create({
+        auto: false, // 选完文件后，是否自动上传。
+        // swf文件路径
+        swf: '@{/js/swf/Uploader.swf}',  //swf路径采用thymeleaf模板引擎的路径方式 (@{})
+        // 文件接收服务端。（请求地址）
+        server: 'uploadImages',
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            id: '#filePicker',
+            multiple: false //关闭上传多张照片
+        },
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        }
+    });
+
+    // 当有文件添加进来的时候
+    uploader.on('fileQueued', function (file) {
+        var fileName = new Date().getTime() + ".jpg"; //自定义上传图片的名称
+        $("#bx_laymap").css("margin-top", "220px!important") //设置地图离页面顶部的距离
+        var $li = $(
+            '<div id="' + file.id + '" class="file-item thumbnail">' +
+            '<img>' +
+            // '<div class="info">' + file.name + '</div>' +
+            '<div class="info">' + fileName + '</div>' +
+            '<p class="state">等待上传...</p>' +
+            '</div>'
+            ),
+            $img = $li.find('img');
+        // $list为容器jQuery实例
+        $list.html("")  //限制只上传一张图片时加上这个
+        $list.append($li);
+        // 创建缩略图
+        // 如果为非图片文件，可以不用调用此方法。
+        // thumbnailWidth x thumbnailHeight 为 100 x 100
+        uploader.makeThumb(file, function (error, src) {
+            if (error) {
+                $img.replaceWith('<span>不能预览</span>');
+                return;
+            }
+            $img.attr('src', src);
+        }, thumbnailWidth, thumbnailHeight);
+    });
+
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on('uploadProgress', function (file, percentage) {
+        var $li = $('#' + file.id),
+            $percent = $li.find('.progress .progress-bar');
+
+        // 避免重复创建
+        if (!$percent.length) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo($li).find('.progress-bar');
+        }
+
+        $li.find('p.state').text('上传中');
+
+        $percent.css('width', percentage * 100 + '%');
+    })
+
+    uploader.on('uploadSuccess', function (file) {
+        $('#' + file.id).find('p.state').text('已上传');
+    });
+
+    uploader.on('uploadError', function (file) {
+        $('#' + file.id).find('p.state').text('上传出错');
+    });
+
+    uploader.on('uploadComplete', function (file) {
+        $('#' + file.id).find('.progress').fadeOut();
+    })
+
+    $btn.on('click', function () {
+        if (state === 'uploading') {
+            uploader.stop();
+        } else {
+            uploader.upload();
+        }
+    });
+
+    <!-- 展示openlayers地图 -->
+    /*function init() {
+        // 使用指定的文档元素创建地图
+        var map = new OpenLayers.Map("bx_laymap");
+        // 创建一个 OpenStreeMap raster layer
+        // 把这个图层添加到map中
+        var osm = new OpenLayers.Layer.OSM();
+        map.addLayer(osm);
+        // 设定视图缩放地图程度为最大
+        map.zoomToMaxExtent();
+    }*/
+
+    //定位当前位置 end
+</script>
+
+<!--谷歌地图(sensor 参数是必须的，该参数用于指明应用程序是否使用一个传感器(类似GPS导航)来定位用户的位置。参数值可以设置为true或者false)-->
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDFNA6uiTeujVvWsfXJ6l_MYNp7Np5rhgw&sensor=true"
+        defer="defer"></script>
+
+</body>
+
+</html>
+

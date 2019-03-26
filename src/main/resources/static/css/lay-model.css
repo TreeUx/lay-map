@@ -1,0 +1,15 @@
+/*模态框 Css*/
+.col-sm-3 {
+    text-align: right;
+}
+#myAddSceneryInfoModal {
+    width: 620px;
+    /*border-top: 1px solid #adbfe4;*/
+    /*border-left: 1px solid #adbfe4;*/
+    /*border-right: 1px solid #8ba4d8;*/
+    /*border-bottom: 1px solid #8ba4d8;*/
+}
+
+#myAddSceneryInfoModal select {
+    width: 95px;
+}

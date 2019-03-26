@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <style type="text/css">
+        body {
+            background: url("/img/7.jpg") no-repeat;
+            background-size: cover;
+            animation-name: myfirst;
+            animation-duration: 30s;
+            /*变换时间*/
+            animation-delay: 15s;
+            /*动画开始时间*/
+            animation-iteration-count: infinite;
+            /*下一周期循环播放*/
+            animation-play-state: running;
+            /*动画开始运行*/
+        }
+
+        @keyframes myfirst {
+            0% {
+                background: url("/img/4.jpg") no-repeat;
+                background-size: cover;
+            }
+            34% {
+                background: url("/img/5.jpg") no-repeat;
+                background-size: cover;
+            }
+            67% {
+                background: url("/img/6.jpg") no-repeat;
+                background-size: cover;
+            }
+            100% {
+                background: url("/img/7.jpg") no-repeat;
+                background-size: cover;
+            }
+        }
+
+        .form {
+            background: rgba(255, 255, 255, 0.2);
+            width: 400px;
+            margin: 260px auto;
+        }
+
+        /*阴影*/
+        .fa {
+            display: inline-block;
+            top: -6px;
+            left: 27px;
+            position: relative;
+            color: #ccc;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding-left: 26px;
+            height: 23px;
+        }
+
+        .checkbox {
+            padding-left: 21px;
+        }
+
+        .fa-lg {
+            line-height: 2.35em !important;
+        }
+
+        .form-title {
+            padding: 20px 0 0 20px !important;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #5cb85c;
+            border-color: #4cae4c;
+            margin: 0 20px;
+        }
+        .btn-reg {
+            color: #3182D9;
+            border: 1px solid #abccef;
+            background-color: #b3b6b9;
+            border-color: #3182D9;
+            margin: 0 20px;
+            display: inline;
+        }
+        .btn-reg > a {
+            color: #3182d9;
+            text-decoration: none;
+            width: 40px;
+            height: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.428571429;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        .btn-reg:hover {
+            background-color: #bbd8f7;
+        }
+
+        /*解决动态添加元素页面抖动问题 Start*/
+        html, body {
+            overflow-y: hidden;
+        }
+
+        html, body {
+            min-height: 101%;
+        }
+
+        html {
+            overflow: -moz-scrollbars-vertical;
+        }
+
+        /*解决动态添加元素页面抖动问题 End*/
+
+        .remind-info {
+            width: 298px;
+            margin-top: -5px;
+            margin-left: 10px;
+            color: #fa5b5b;
+            font-size: 14px;
+            line-height: 20px;
+            vertical-align: top;
+            word-break: break-all;
+        }
+
+        .name-remind {
+            border: 1px solid red;
+        }
+
+        .psw-remind {
+            border: 1px solid red;
+        }
+
+        .forgetpwd {
+            float: right;
+            color: #3182d9;
+        }
+
+        .forgetpwd {
+            height: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 16px;
+        }
+
+        .forgetpwd:hover {
+            font-weight: bold;
+        }
+    </style>
+    <!--<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>-->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <!--<script th:src="@{/webjars/bootstrap/js/bootstrap.js}"></script>-->
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link th:href="@{/webjars/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script th:src="@{/js/bxkj/login.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="container">
+    <div class="form row">
+        <div class="form-horizontal col-md-offset-3" id="login_form">
+            <h3 class="form-title">LOGIN</h3>
+            <!--<form action="/login" method="post">-->
+                <div class="col-md-9" style="text-align:center;">
+                    <div class="form-group">
+                        <i class="fa fa-user fa-lg"></i>
+                        <input class="form-control required" type="text" placeholder="Username" id="username"
+                               name="username" autofocus="autofocus" maxlength="20"/>
+                    </div>
+                    <div class="form-group" id="remind">
+                        <i class="fa fa-lock fa-lg"></i>
+                        <input class="form-control required" type="password" placeholder="Password" id="password"
+                               name="password" maxlength="8"/>
+                    </div>
+                    <div class="form-group" style="width: 80%;">
+                        <label class="checkbox" style="font-family:'微软雅黑';font-size:14px;color: #353434;">
+                            <input id="rememberMe" type="checkbox" name="rememberMe"/>记住我
+                            <a id="forget_pwd" class="forgetpwd j-redirect" href="/forget" target="_self">忘记密码？</a>
+                        </label>
+                    </div>
+                    <div class="form-group" style="padding:20px;">
+                        <button id="bx_login" type="button" class="btn btn-success" name="submit" onclick="checkLogin();">登录</button>
+                        <!--<label for="register_u" class="btn btn-success btn-reg"><a id="register_u" href="/register" target="_self">注册</a></label>-->
+                    </div>
+                </div>
+            <!--</form>-->
+            <div style="clear: both"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

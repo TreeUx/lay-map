@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bx.gis.mapper.UserManageMapper">
+	<!--获取旅行社id和运营部id信息-->
+	<select id="selectTraIdAndOpDeptidInfo" resultType="com.bx.gis.entity.UUser">
+		SELECT
+			id,
+        	tra_id,
+        	op_deptid,
+        	operate_id
+        FROM
+        	u_user
+        WHERE
+        	id = #{id}
+	</select>
+
+	<!--查询用户信息-->
+    <select id="selectUserInfo" resultType="com.bx.gis.entity.UUser">
+        SELECT
+        id,
+        nickname,
+        pswd,
+        tra_id,
+        op_deptid,
+        operate_id,
+        email,
+        CONCAT("",create_time) 'create_time',
+        parent_id
+        FROM
+        	u_user
+		WHERE
+			parent_id = #{id}
+    </select>
+
+	<!--查询用户分页信息-->
+	<select id="selectUserPageInfo" resultType="com.bx.gis.entity.UUser">
+		SELECT
+        id,
+        nickname,
+        pswd,
+        tra_id,
+        op_deptid,
+        operate_id,
+        email,
+        CONCAT("",create_time) 'create_time',
+        parent_id
+        FROM
+        	u_user
+		WHERE
+			parent_id = #{id}
+		ORDER BY
+			create_time DESC
+		LIMIT #{currentPage},#{perNum}
+	</select>
+
+	<!--根据条件查询用户信息-->
+    <select id="searchUserInfo" resultType="com.bx.gis.entity.UUser">
+		SELECT
+			id,
+		nickname,
+		pswd,
+		tra_id,
+		op_deptid,
+		operate_id,
+		email,
+		CONCAT("",create_time) 'create_time',
+		parent_id
+	  FROM
+		u_user
+	  WHERE
+	  	nickname = #{nickname}
+	  	AND parent_id = #{id}
+	</select>
+
+    <!--删除用户信息-->
+    <delete id="delUserInfo">
+		DELETE
+		FROM
+			u_user
+		WHERE
+			id = #{id}
+	</delete>
+
+    <!--批量删除用户信息-->
+    <delete id="batchDelUsersInfo">
+        DELETE
+        FROM
+        u_user
+        WHERE
+        id IN
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--查找用户名是否存在-->
+    <select id="checkUsername" resultType="java.lang.Integer">
+		SELECT
+			COUNT(0)
+		FROM
+			u_user
+		WHERE
+			nickname = #{username}
+	</select>
+
+    <!--保存采线员信息-->
+    <insert id="saveUserInfo" parameterType="com.bx.gis.entity.UUser">
+		INSERT INTO
+			u_user (
+				nickname,pswd,email,parent_id,tra_id,op_deptid,operate_id,state,create_time
+			) VALUE (
+				#{nickname},#{pswd},#{email},#{parent_id},#{tra_id},#{op_deptid},#{operate_id},1,now()
+			)
+	</insert>
+
+    <!--修改用户信息-->
+    <update id="updateUserInfo" parameterType="com.bx.gis.entity.UUser">
+		UPDATE
+			u_user
+		SET
+			email = #{email}
+		WHERE
+			nickname = #{nickname}
+	</update>
+
+    <!--保存验证码信息-->
+    <update id="sendAndSaveEcodeInfo">
+		UPDATE
+			u_user
+		SET
+			ecode = #{ecode}
+		WHERE
+			nickname = #{nickname}
+	</update>
+
+    <!--校验验证码是否正确-->
+    <select id="checkUserEcodeInfo" resultType="java.lang.Integer">
+		SELECT
+			COUNT(0)
+		FROM
+			u_user
+		WHERE
+			nickname = #{nickname}
+			AND email = #{email}
+			AND ecode = #{ecode}
+	</select>
+
+    <!--保存修改后的用户信息-->
+    <update id="updateUserPwdInfo">
+		UPDATE
+			u_user
+		SET
+			pswd = #{pswd}
+		WHERE
+			nickname = #{nickname}
+	</update>
+
+    <!--保存用户注册信息-->
+    <insert id="saveFirstUserInfo">
+		INSERT INTO
+			u_user (
+				nickname,pswd,email,parent_id,tra_id,op_deptid,operate_id,ecode,create_time
+			) VALUE (
+				#{nickname},#{pswd},#{email},0,#{tra_id},#{op_deptid},#{operate_id},#{ecode},now()
+			)
+	</insert>
+
+    <!--激活用户信息-->
+    <update id="updateFirstUserInfo">
+		UPDATE
+			u_user
+		SET
+			state = 1
+		WHERE
+			nickname = #{nickname}
+			AND email = #{email}
+	</update>
+
+</mapper>

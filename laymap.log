@@ -1,0 +1,19 @@
+2019-03-18 12:21:37.741  INFO 10520 --- [main] com.banxing.map.LayMapApplication        : Starting LayMapApplication on User-PC with PID 10520 (F:\lay-map\target\classes started by User in F:\lay-map)
+2019-03-18 12:21:37.772  INFO 10520 --- [main] com.banxing.map.LayMapApplication        : The following profiles are active: test
+2019-03-18 12:21:42.547  INFO 10520 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8088 (http)
+2019-03-18 12:21:42.609  INFO 10520 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-03-18 12:21:42.609  INFO 10520 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.14]
+2019-03-18 12:21:42.625  INFO 10520 --- [main] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Program Files\Java\jdk1.8.0_131\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python27\;C:\Python27\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\AMD\ATI.ACE\Core-Static;D:\Program Files\Java\jdk1.8.0_131\bin;D:\Program Files\Java\jdk1.8.0_131\jre\bin;D:\Program Files\tomcat\lib;D:\Program Files\tomcat\bin;F:\apache-maven-3.5.4\bin;C:\Program Files\MySQL\MySQL Server 5.7\bin;F:\Git\bin;C:\Program Files\TortoiseSVN\bin;F:\;C:\ProgramData\chocolatey\bin;C:\Program Files\TortoiseGit\bin;C:\Users\User\AppData\Roaming\npm;.]
+2019-03-18 12:21:42.906  INFO 10520 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-18 12:21:42.906  INFO 10520 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4822 ms
+2019-03-18 12:21:43.062  INFO 10520 --- [main] com.banxing.map.conf.LogConfig           : ****************************
+2019-03-18 12:21:43.062  INFO 10520 --- [main] com.banxing.map.conf.LogConfig           : Start Print logger info!!!
+2019-03-18 12:21:43.062  INFO 10520 --- [main] com.banxing.map.conf.LogConfig           : ****************************
+2019-03-18 12:21:43.842  INFO 10520 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-03-18 12:21:44.107  WARN 10520 --- [main] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][main] Template Mode 'LEGACYHTML5' is deprecated. Using Template Mode 'HTML' instead.
+2019-03-18 12:21:44.185  INFO 10520 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-03-18 12:21:44.793  INFO 10520 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8088 (http) with context path ''
+2019-03-18 12:21:44.809  INFO 10520 --- [main] com.banxing.map.LayMapApplication        : Started LayMapApplication in 9.018 seconds (JVM running for 16.303)
+2019-03-18 12:22:17.622  INFO 10520 --- [http-nio-8088-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-03-18 12:22:17.625  INFO 10520 --- [http-nio-8088-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-03-18 12:22:17.672  INFO 10520 --- [http-nio-8088-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 37 ms

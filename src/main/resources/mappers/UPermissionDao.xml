@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bx.gis.mapper.UPermissionDao">
+
+    <select id="findPermissionByUid" resultType="com.bx.gis.entity.UPermission">
+        SELECT
+          *
+        FROM
+          u_permission t,
+          u_role_permission t1,
+          u_user_role t2
+        WHERE
+          t.id = t1.pid
+          AND t1.rid = t2.rid
+          AND t2.uid = #{id}
+    </select>
+</mapper>

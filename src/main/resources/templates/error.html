@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>异常页面</title>
+    <style type="text/css">
+        #timer {
+            text-align: center;
+            color: red;
+            font-family: "Microsoft YaHei UI";
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .error-info {
+            text-align: center;
+            color: red;
+            font-family: "Microsoft YaHei UI";
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="error-info">
+        <h1>404!</h1>
+
+        <h4>非常遗憾，您访问的页面被外星人劫持了！</h4>
+
+        <p>看到这个提示，就自认倒霉吧！</p>
+
+        <p><a href='login'>返回登录页</a></p>
+    </div>
+    <div>
+        <p id="timer"></p>
+    </div>
+    <script type="text/javascript">
+        var time = 3*1000;//计算出毫秒数
+        var se;
+        se = setInterval('t_time()',1000);
+        function t_time() {
+            //倒计时
+            // var mm = parseInt(time/60/1000%60,10);//剩余的分钟数
+            var ss = parseInt(time/1000%60,10);//剩余的秒数
+            // mm = checkTime(mm);
+            // ss = checkTime(ss);
+            $("#timer").html(ss+'秒后将自动跳转到登录页');
+            time = time-1000;
+            if(ss==1) {
+                clearInterval(se);
+                location.href = "login" //跳转到登录页
+            }
+        }
+    </script>
+</body>
+</html>

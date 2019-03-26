@@ -1,0 +1,73 @@
+<!--用于声明改文件为HTML5文件-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>系统登录</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="author" content="Dreamer-1">
+    <meta name="renderer" content="webkit" />
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/md5/md5.js}"></script>
+</head>
+
+<body>
+<form name="form1" method="post" action="/login" id="form1" onsubmit="return checkLogin();">
+    <div id="main">
+        <div class="wrapper">
+            <div class="login-hd"></div>
+            <div class="login-body">
+                <div class="logo">
+                    <span class="icon-logo"></span>
+                </div>
+                <div class="box">
+                    <div class="login-item">
+                        <span class="icon-user"></span>
+                        <input name="username" type="text" id="username" class="login-input" tabindex="1" maxlength="50" placeholder="请输入用户名" />
+
+                    </div>
+                    <div class="login-item mt35">
+                        <span class="icon-pwd"></span>
+                        <input type="password" id="password"  class="login-input" tabindex="2" maxlength="32" placeholder="请输入密码"/>
+                        <input type="hidden" id="hidePwd" name="password">
+                    </div>
+                    <div class="login-forget" style="visibility:hidden">
+                        <a href="#">忘记密码</a>
+                    </div>
+
+                    <input type="submit" name="Logon" value="登录" id="Logon" tabindex="3" class="login-btn" />
+                    <div class="login-bottom">
+                        <div class="msg"  style="display:none;" >
+                            <span class="icon-err"></span>
+                            <span id="message"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    // onsubmit值为true时，提交表单，否则显示错误信息
+    // 生成用户名+密码组合的md5值，并设置传给后端的密码为该md5值
+    function checkLogin() {
+        var name = $("#username").val().toLowerCase();
+        var pwd = $("#password").val().toLowerCase();
+        if(name.trim()=="" || pwd.trim()=="") {
+            $("#message").text("请输入用户名和密码");
+            $('.msg').show();
+            return false;
+        }else {
+            $('.msg').hide();
+        }
+
+        var md5info = name + pwd;
+        $('#hidePwd').val(md5(md5info));
+        //$("#password").val();
+        return true;
+    }
+</script>
+</body>
+</html>

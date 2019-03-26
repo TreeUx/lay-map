@@ -1,0 +1,35 @@
+.popover{
+    min-width: 10rem;
+    font-size: 1rem;
+    overflow: auto;
+}
+.popover-title{
+    font-size: 1.17rem;
+}
+.scenery{
+    width: 100%;
+    background-color: #269abc;
+}
+.scenery-image{
+    height: 200px;
+    background-color: white;
+}
+.scenery-nav{
+    height: 2rem;
+    position:relative;
+    background-color: white;
+}
+.scenery-name{
+    display: inline-block;
+    margin: 0;
+    padding: 0.4rem;
+}
+.scenery-commentary{
+    display: inline-block;
+    margin: 0;
+    height: 2rem;
+    width: 2.8rem;
+    position: absolute;
+    right: 0.2rem;
+    padding: 0.4rem;
+}
