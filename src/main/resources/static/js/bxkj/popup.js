@@ -4,7 +4,7 @@
 var container = document.getElementById('popup');
 var content = document.getElementById('popup-content');
 var closer = document.getElementById('popup-closer');
-
+var characterBl = false //判断是否选择资源特色
 
 /**
  * Add a click handler to hide the popup.
@@ -56,7 +56,6 @@ function showAddModel() {
     $("#myAddSceneryInfoModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
 }
 
-var characterBl = false //判断是否选择资源特色
 $(function () {
     $('#myAddSceneryInfoModal').on('shown.bs.modal', function () {
         listenTitleShow(); //添加图片
