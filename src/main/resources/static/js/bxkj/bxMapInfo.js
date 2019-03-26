@@ -140,6 +140,7 @@ $(function () {
 });
 
 //地图添加右键菜单
+var coordinate //右键点击处的坐标信息
 function addRightMenu() {
     // $("#bx_content").find("#contextmenu_container").remove()
     $("#bx_laymap").append(CONTENT)
@@ -151,7 +152,7 @@ function addRightMenu() {
     $(map.getViewport()).on("contextmenu", function (event) {
         event.preventDefault(); //屏蔽自带的右键事件
         menu_overlay.setMap(map);
-        var coordinate = map.getEventCoordinate(event.originalEvent); //获取点击处的坐标信息
+        coordinate = map.getEventCoordinate(event.originalEvent); //获取右键点击处的坐标信息
         menu_overlay.setPosition(coordinate)
         $("a").click(function () { //添加鼠标左键点击菜单项时，右键菜单隐藏
             menu_overlay.setPosition(undefined);
@@ -427,12 +428,14 @@ function saveNewSceneryInfo(e) {
         success: function (data) {
             if (data.status == "success") {
                 console.log(data)
-                map.closeInfoWindow()
+                // map.closeInfoWindow()
+                clear() //重置添加模态框内容
+                $("#myAddSceneryInfoModal").modal("hide") //隐藏添加模态框
                 showSuccessOrErrorModal(data.msg, "success");//保存成功后，需要添加一个标记点
                 var comCode = data.comCode;//获取保存的景点的商品编码
                 var lng = data.lng //转换后的坐标
                 var lat = data.lat//转换后的坐标
-                addMarkImg(map, lng, lat, comCode, e);//添加标记
+                // addMarkImg(map, lng, lat, comCode, e);//添加标记
             } else {
                 showSuccessOrErrorModal(data.msg, "error");
             }
@@ -456,7 +459,7 @@ function updateSceneryInfo(map, lng, lat, title, marker) {
             if (data.status == "success") {
                 data = data.sceneryInfoList[0];
                 console.log(data)
-                addNewSceneryInfos(map, lng, lat, title, data, marker); //弹出修改菜单框
+                // addNewSceneryInfos(map, lng, lat, title, data, marker); //弹出修改菜单框
             } else {
                 showSuccessOrErrorModal(data.msg, "error");
             }
@@ -677,8 +680,8 @@ function listenTitleShow() {
         $list = $('#fileList1'),
         ratio = window.devicePixelRatio || 1,
         // 设置预览图的宽高
-        thumbnailWidth = 90 * ratio,
-        thumbnailHeight = 90 * ratio,
+        thumbnailWidth = 240 * ratio,
+        thumbnailHeight = 200 * ratio,
         // Web Uploader实例
         uploader;
     // 创建Web Uploader实例
@@ -714,7 +717,9 @@ function listenTitleShow() {
     uploader.on('fileQueued', function (file) {
         var fileName = new Date().getTime() + ".jpg"; //自定义上传图片的名称
         var $li = $(
-            '<div id="' + file.id + '" class="file-item thumbnail" style="float:left;padding-left:10px;width:88px;">' +
+            '<div id="' + file.id + '" class="file-item thumbnail" style="float:left;width:140px;border: 1px solid #00BFFF;' +
+            '    border-left: 5px solid #00BFFF;' +
+            '    border-bottom: 3px solid #00BFFF;margin-right: 1px;">' +
             '<img>' +
             // '<div class="info">' + file.name + '</div>' +
             '<div class="info">' + fileName + '</div>' +
