@@ -55,6 +55,8 @@ function showAddModel() {
     // });
     $("#myAddSceneryInfoModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
 }
+
+var characterBl = false //判断是否选择资源特色
 $(function () {
     $('#myAddSceneryInfoModal').on('shown.bs.modal', function () {
         listenTitleShow(); //添加图片
