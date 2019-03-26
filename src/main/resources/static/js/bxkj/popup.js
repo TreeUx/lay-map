@@ -59,7 +59,8 @@ function showAddModel() {
 $(function () {
     $('#myAddSceneryInfoModal').on('shown.bs.modal', function () {
         listenTitleShow(); //添加图片
-
+        $("#scenery_location").val(coordinate) //设置点击处的坐标
+        $("#location").text(coordinate) //设置点击处的坐标
         //初始化下拉选
         for (var i = 0; i < GlobalCity.length; i++) { //国家
             $("#continents").append(
@@ -162,4 +163,13 @@ function queryCityInfo() {
             }
         }
     }
+}
+
+//清空添加模态框内容
+function clear() {
+    $("#fileList1").html("") //重置上传图片
+    $("#scenery_name").val("") //重置名称
+    $("#scenery_address").val("") //重置地址
+    $("#com_best").val("") //重置游玩时间
+    $("#scenery_remark").val("") //重置备注
 }
