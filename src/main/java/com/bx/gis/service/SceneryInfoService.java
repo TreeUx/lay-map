@@ -1,6 +1,7 @@
 package com.bx.gis.service;
 
 import com.bx.gis.entity.BxCommodityCommon;
+import com.bx.gis.entity.BxSubjectivity;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ public interface SceneryInfoService {
 
     int querySceneryIfExist(String scenery_name);
 
-    int addSceneryType(BxCommodityCommon bcc);
+    int addSceneryType(BxSubjectivity bs);
 
     int deleteNewSceneryInfo(String comCode);
 

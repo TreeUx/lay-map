@@ -42,6 +42,8 @@ public class BxCommodityCommon {
     private String comLevel;
     /*国家*/
     private String state;
+    /*省份*/
+    private String province;
     /*城市*/
     private String city;
     /*父指针*/

@@ -370,26 +370,29 @@ function showSceneryInfoMap(scenery_name, map_type) {
 function submitSceneryInfo(e) {//lng, lat为当前点击的点的经纬度坐标
     var objReg = /^[0-9]+$/;  //正则判断最佳游玩时间是否为正整数
     title = "必填项提示"
+    var continents = $("#continents").val() == null ? "" : $("#continents").val()
+    var state = $("#state").val() == null ? "" : $("#state").val()
+    var city = $("#city").val() == null ? "" : $("#continents").val()
     //表单验证
     if ($("#scenery_name").val() == "") {//景点名称
         msg = "请输入景点名称"
         showWarning(title, msg)
-    } else if ($("#continents").val() == "") {//地区
+    } else if (continents == "" && $("#continents").find("option").length != 0) {//国家
         msg = "请选择地区"
         showWarning(title, msg)
-    } else if ($("#nation").val() == "") {//国家
+    } else if ($("#state").val() == "" && $("#state").find("option").length != 0) {//省份
         msg = "请选择国家"
         showWarning(title, msg)
-    } else if ($("#city").val() == "") {//城市
+    } else if ($("#city").val() == "" && $("#city").find("option").length != 0) {//城市
         msg = "请选择城市"
         showWarning(title, msg)
     } else if ($("#scenery_address").val() == "") {//详细地址
         msg = "请输入详细地址"
         showWarning(title, msg)
-    } /*else if ($("#scenery_character").val() == "") {//景点特色
-        msg = "请选择景点特色"
+    } else if (!characterBl) {//景点特色
+        msg = "请选择资源特色"
         showWarning(title, msg)
-    } */else if ($("#scenery_type").val() == "") {//类型
+    } else if ($("#scenery_type").val() == "") {//类型
         msg = "请选择类型"
         showWarning(title, msg)
     } else if ($("#scenery_start_time").val() == "") {//开放时间

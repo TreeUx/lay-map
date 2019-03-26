@@ -1,6 +1,7 @@
 package com.bx.gis.mapper;
 
 import com.bx.gis.entity.BxCommodityCommon;
+import com.bx.gis.entity.BxSubjectivity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface SceneryInfoMapper {
 
     int querySceneryIfExist(String scenery_name);
 
-    int addSceneryType(BxCommodityCommon bcc);
+    int addSceneryType(BxSubjectivity bs);
 
     int deleteNewSceneryInfo(String comCode);
 

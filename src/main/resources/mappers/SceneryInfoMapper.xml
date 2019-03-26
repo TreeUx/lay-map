@@ -26,20 +26,22 @@
     <insert id="addNewSceneryInfo" parameterType="com.bx.gis.entity.BxCommodityCommon">
       INSERT INTO
         bx_commodity (
-          com_code,com_name,state,city,com_address,com_central,com_duplex,
-          com_begining,com_moment,com_level,com_introduce,com_best,parentid,com_time
+          com_code,com_name,com_type,state,province,city,com_address,com_central,com_duplex,
+          com_begining,com_moment,com_level,com_introduce,com_best,parentid
         ) VALUES (
-          #{comCode},#{comName},#{state},#{city},#{comAddress},#{comCentral},#{comDuplex}
-          ,#{comBegining},#{comMoment},#{comLevel},#{comIntroduce},#{comBest},#{parentid},now()
+          #{comCode},#{comName},#{comType},#{state},#{province},#{city},#{comAddress},#{comCentral},#{comDuplex}
+          ,#{comBegining},#{comMoment},#{comLevel},#{comIntroduce},#{comBest},#{parentid}
         )
     </insert>
     <!-- 添加景点信息对应的资源特色 -->
-    <insert id="addSceneryType" parameterType="com.bx.gis.entity.BxCommodityCommon">
+    <insert id="addSceneryType" parameterType="com.bx.gis.entity.BxSubjectivity">
         INSERT INTO
         bx_subjectivity (
-          product_id
+          product_id,epidemic,recreational,nostalgic,romantic,parent_child
+          ,naturalness,singularity,excitement,culture,ornamental,participatory,iconic
         ) VALUES (
-          #{comCode}
+          #{productId},#{epidemic},#{recreational},#{nostalgic},#{romantic},#{parentChild}
+          ,#{naturalness},#{singularity},#{excitement},#{culture},#{ornamental},#{participatory},#{iconic}
         )
     </insert>
 

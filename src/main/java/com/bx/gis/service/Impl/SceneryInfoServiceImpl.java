@@ -1,6 +1,7 @@
 package com.bx.gis.service.Impl;
 
 import com.bx.gis.entity.BxCommodityCommon;
+import com.bx.gis.entity.BxSubjectivity;
 import com.bx.gis.mapper.SceneryInfoMapper;
 import com.bx.gis.service.SceneryInfoService;
 import org.apache.ibatis.annotations.Param;
@@ -67,8 +68,8 @@ public class SceneryInfoServiceImpl implements SceneryInfoService {
       * @return int
       */
     @Override
-    public int addSceneryType(BxCommodityCommon bcc) {
-        return sceneryInfoMapper.addSceneryType(bcc);
+    public int addSceneryType(BxSubjectivity bs) {
+        return sceneryInfoMapper.addSceneryType(bs);
     }
 
     /**
