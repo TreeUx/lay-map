@@ -4,30 +4,17 @@ import com.bx.gis.common.StringRandom;
 import com.bx.gis.entity.BxCommodityCommon;
 import com.bx.gis.entity.BxSubjectivity;
 import com.bx.gis.service.SceneryInfoService;
-import com.bx.gis.utils.ImageUtil;
-import com.bx.gis.utils.JsonResult;
+import net.sf.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -127,7 +114,8 @@ public class SceneryInfoController {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Map<String, Object> results = new HashMap<>();
         String comDuplex = ""; //双向出入口
-        int parentid = Integer.parseInt("undefined".equals(request.getParameter("parentid")) ?"0":request.getParameter("parentid"));//父类id
+        System.out.println(request.getParameter("parentid") == "");
+        int parentid = Integer.parseInt(request.getParameter("parentid") == "" ?"0":request.getParameter("parentid"));//父类id
         String com_code = request.getParameter("com_code");//商品代码
         String scenery_name = request.getParameter("scenery_name");//名称
         String state = request.getParameter("continents");//国家
@@ -143,7 +131,7 @@ public class SceneryInfoController {
         String scenery_remark = request.getParameter("scenery_remark");//备注
         String[] com_duplex = request.getParameterValues("com_duplex");
         String character_type = request.getParameter("character_type"); //资源特色
-        net.sf.json.JSONObject characterJo = net.sf.json.JSONObject.fromObject(character_type.toString());
+        JSONObject characterJo = JSONObject.fromObject(character_type.toString());
         System.out.println(characterJo);
         int epidemic = Integer.parseInt(characterJo.get("epidemic").toString()); //流行性
         int recreational = Integer.parseInt(characterJo.get("recreational").toString()); //休闲性
@@ -443,10 +431,7 @@ public class SceneryInfoController {
                 result.put("msg", "线路轨迹路线信息查询成功");
                 result.put("status", "success");
                 result.put("data", trackInfoList);
-            } /*else {
-                result.put("status", "error");
-                result.put("msg", "线路轨迹路线信息查询失败");
-            }*/
+            }
         } catch (Exception e) {
             result.put("status", "error");
             result.put("msg", "操作失败");
