@@ -1,10 +1,13 @@
 package com.bx.gis.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bx.gis.common.MapConstant;
 import com.bx.gis.common.StringRandom;
 import com.bx.gis.entity.BxCommodityCommon;
 import com.bx.gis.entity.BxSubjectivity;
 import com.bx.gis.service.SceneryInfoService;
-import net.sf.json.JSONObject;
+import com.bx.gis.utils.RequestUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +40,11 @@ public class SceneryInfoController {
     SceneryInfoService sceneryInfoService;
 
     /**
+     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
      * @Author Breach
      * @Description 校验用户名密码
      * @Date 2019/2/15
      * @Param
-     * @return java.util.Map<java.lang.String,java.lang.Object>
      */
    /* @RequestMapping("/check")
     @ResponseBody
@@ -68,6 +71,31 @@ public class SceneryInfoController {
         model.addAttribute("name", "景点数据采集");
         return "bxlyMap";
     }*/
+    @RequestMapping("/queryCenterPoi")
+    @ResponseBody
+    public Map<String, Object> checkInfo(HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> para = new HashMap<>();
+        String scenery_name = request.getParameter("scenery_name");
+        String url = MapConstant.BAIDU_POI + MapConstant.BD_QUERY + scenery_name
+                + MapConstant.BD_REGION + scenery_name + MapConstant.BD_OUTPUT_AND_AK + MapConstant.SERVER_AK;
+        System.out.println(url);
+        try {
+
+            JSONObject jo = RequestUtils.sendPost(url);
+            JSONArray jos = JSONObject.parseArray(jo.get("results").toString());
+            JSONObject locaJo = JSONObject.parseObject(JSONObject.parseObject(jos.get(0).toString()).get("location").toString());
+            String location = locaJo.get("lng") + "," + locaJo.get("lat");
+            result.put("status", 200);
+            result.put("lng", locaJo.get("lng") == null ? 0 : locaJo.get("lng"));
+            result.put("lat", locaJo.get("lat") == null ? 0 : locaJo.get("lat"));
+            result.put("location", location);
+        } catch (Exception e) {
+            result.put("status", 500);
+            result.put("error", "获取地图失败");
+        }
+        return result;
+    }
 
     /**
      * @Author Breach
@@ -101,7 +129,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
      * @Author Breach
      * @Description 新增采集的景区单元信息
      * @Date 2019/1/3
@@ -115,7 +143,7 @@ public class SceneryInfoController {
         Map<String, Object> results = new HashMap<>();
         String comDuplex = ""; //双向出入口
         System.out.println(request.getParameter("parentid") == "");
-        int parentid = Integer.parseInt(request.getParameter("parentid") == "" ?"0":request.getParameter("parentid"));//父类id
+        int parentid = Integer.parseInt(request.getParameter("parentid") == "" ? "0" : request.getParameter("parentid"));//父类id
         String com_code = request.getParameter("com_code");//商品代码
         String scenery_name = request.getParameter("scenery_name");//名称
         String state = request.getParameter("continents");//国家
@@ -131,7 +159,7 @@ public class SceneryInfoController {
         String scenery_remark = request.getParameter("scenery_remark");//备注
         String[] com_duplex = request.getParameterValues("com_duplex");
         String character_type = request.getParameter("character_type"); //资源特色
-        JSONObject characterJo = JSONObject.fromObject(character_type.toString());
+        JSONObject characterJo = JSONObject.parseObject(character_type.toString());
         System.out.println(characterJo);
         int epidemic = Integer.parseInt(characterJo.get("epidemic").toString()); //流行性
         int recreational = Integer.parseInt(characterJo.get("recreational").toString()); //休闲性
@@ -145,7 +173,7 @@ public class SceneryInfoController {
         int ornamental = Integer.parseInt(characterJo.get("ornamental").toString()); //观赏性
         int participatory = Integer.parseInt(characterJo.get("participatory").toString()); //参与性
         int iconic = Integer.parseInt(characterJo.get("iconic").toString()); //标志性
-        if(com_duplex != null && com_duplex.length != 0) {
+        if (com_duplex != null && com_duplex.length != 0) {
             for (int i = 0; i < com_duplex.length; i++) { //双向出入口
                 comDuplex += (com_duplex[i] + " ");
             }
@@ -247,7 +275,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
      * @Author Breach
      * @Description 根据商品code查询出商品信息
      * @Date 2019/1/4
@@ -278,7 +306,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
      * @Author Breach
      * @Description 删除采集的景点数据
      * @Date 2019/1/4
@@ -308,7 +336,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
      * @Author Breach
      * @Description 根据搜索条件查询景区出入口信息
      * @Date 2019/1/7
@@ -335,7 +363,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
      * @Author Breach
      * @Description 根据搜索条件查询景区出入口信息
      * @Date 2019/1/7
@@ -363,11 +391,11 @@ public class SceneryInfoController {
     }
 
     /**
+     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
      * @Author Breach
      * @Description 保存转换后的线路坐标信息
      * @Date 2019/1/9
      * @Param request
-     * @return java.util.Map<java.lang.String,java.lang.Object>
      */
     @RequiresAuthentication
     @RequestMapping("/addPointlineInfos")
@@ -413,7 +441,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
      * @Author Breach
      * @Description 根据景点Id查询景点内所有线路轨迹坐标信息
      * @Date 2019/1/7
