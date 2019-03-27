@@ -32,7 +32,7 @@ $(function () {
         var type = $("#map_type_sel option:selected").val()
         switch (type) {
             case "bd-map":
-                targetStr = baiduMapLayer
+                targetStr = baiduMapLayer // AMapLayer googleMapLayer
                 console.log("调用高德初始化地图")
                 break
             case "gd-map":
@@ -276,9 +276,27 @@ function queryMapInfo() {
     mapType = $("#map_type_sel").val()
     var scenery_name = $("#input_name").val() //搜索名称
     var map_type = $("#map_type_sel option:selected").val() //地图类型
-    if (scenery_name != "") {
-        showSceneryInfoMap(scenery_name, map_type);//展示地图查询
-    }
+    $.ajax({
+        url: "queryCenterPoi",
+        type: "post",
+        data: {
+            "scenery_name": scenery_name
+        },
+        dataType: "json",
+        success: function (data) {
+            debugger
+            if (data.status == 200) {
+                var lng = data.lng //获取百度地图经纬度
+                var lat = data.lat //获取百度地图经纬度
+                showSceneryInfoMap(lng, lat, map_type);//展示地图查询
+            } else {
+                showSuccessOrErrorModal(data.msg, "error");
+            }
+        },
+        error: function (e) {
+            showSuccessOrErrorModal("网络异常！", "error");
+        }
+    })
 }
 
 //获取景区信息（搜索提示）
@@ -324,7 +342,40 @@ function querySceneryInfo(scenery_name, map_type) {
  * @return
  */
 var temp_flag = true //控制地图展示问题
-function showSceneryInfoMap(scenery_name, map_type) {
+function showSceneryInfoMap(lng, lat, map_type) {
+    switch (map_type) {
+        case "bd-map": //百度搜索
+            targetStr = baiduMapLayer // AMapLayer googleMapLayer
+            break
+        case "gd-map": //高德搜索
+            targetStr = AMapLayer
+            console.log("调用了高德地图")
+            break
+        case "gg-map": //谷歌搜索
+            targetStr = googleMapLayer
+            console.log("调用了谷歌地图")
+            temp_flag = true //控制高德地图搜索展示问题
+            break
+        default: //默认百度搜索
+            targetStr = baiduMapLayer
+            console.log("调用了默认地图")
+            temp_flag = true //控制高德地图搜索展示问题
+            break
+    }
+    /*调用地图 Start*/
+    $("#bx_laymap").html("")
+    map = new ol.Map({
+        layers: [targetStr],//AMapLayer, baiduMapLayer, googleMapLayer
+        target: 'bx_laymap',
+        view: new ol.View({
+            center: ol.proj.fromLonLat([lng, lat]),
+            zoom: 14
+        })
+    })
+    addRightMenu() //右键菜单
+    /*调用地图 End*/
+}
+/*function showSceneryInfoMap(scenery_name, map_type) {
     switch (map_type) {
         case "bd-map": //百度搜索
             map = new BMap.Map("bx_laymap", {enableMapClick: false}); //enableMapClick:false关闭地图可点功能
@@ -365,7 +416,7 @@ function showSceneryInfoMap(scenery_name, map_type) {
             break
     }
     addRightMenu() //右键菜单
-}
+}*/
 
 //提交
 function submitSceneryInfo(e) {//lng, lat为当前点击的点的经纬度坐标
