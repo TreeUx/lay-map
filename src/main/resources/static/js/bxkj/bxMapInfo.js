@@ -48,18 +48,22 @@ $(function () {
                 console.log("调用默认初始化地图")
                 break
         }
-        /*调用地图 Start*/
-        $("#bx_laymap").html("")
-        map = new ol.Map({
-            layers: [targetStr],//AMapLayer, baiduMapLayer, googleMapLayer
-            target: 'bx_laymap',
-            view: new ol.View({
-                center: ol.proj.fromLonLat([114.065127, 22.548189]),
-                zoom: 14
+        if ($("#input_name").val() != "" && $("#input_name").val() != null) {
+            queryMapInfo() //调用查询
+        } else {
+            /*调用地图 Start*/
+            $("#bx_laymap").html("")
+            map = new ol.Map({
+                layers: [targetStr],//AMapLayer, baiduMapLayer, googleMapLayer
+                target: 'bx_laymap',
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([114.065127, 22.548189]),
+                    zoom: 14
+                })
             })
-        })
-        addRightMenu() //右键菜单
-        /*调用地图 End*/
+            addRightMenu() //右键菜单
+            /*调用地图 End*/
+        }
     })
     /*切换地图 End*/
     //展开、隐藏
@@ -273,18 +277,18 @@ function transToGps(pointList) { //pointList转换前的坐标点数组
  * @Date 2018/12/20
  */
 function queryMapInfo() {
-    mapType = $("#map_type_sel").val()
+    mapType = $("#map_type_sel").val() //地图类型
     var scenery_name = $("#input_name").val() //搜索名称
     var map_type = $("#map_type_sel option:selected").val() //地图类型
     $.ajax({
         url: "queryCenterPoi",
         type: "post",
         data: {
-            "scenery_name": scenery_name
+            "scenery_name": scenery_name,
+            "mapType": mapType
         },
         dataType: "json",
         success: function (data) {
-            debugger
             if (data.status == 200) {
                 var lng = data.lng //获取百度地图经纬度
                 var lat = data.lat //获取百度地图经纬度
@@ -375,6 +379,7 @@ function showSceneryInfoMap(lng, lat, map_type) {
     addRightMenu() //右键菜单
     /*调用地图 End*/
 }
+
 /*function showSceneryInfoMap(scenery_name, map_type) {
     switch (map_type) {
         case "bd-map": //百度搜索
@@ -483,9 +488,12 @@ function saveNewSceneryInfo(e) {
                 clear() //重置添加模态框内容
                 $("#myAddSceneryInfoModal").modal("hide") //隐藏添加模态框
                 showSuccessOrErrorModal(data.msg, "success");//保存成功后，需要添加一个标记点
+                var lng = data.lng
+                var lat = data.lat
+                addVectorLayer(map, lng, lat) //添加标记点
                 var comCode = data.comCode;//获取保存的景点的商品编码
-                var lng = data.lng //转换后的坐标
-                var lat = data.lat//转换后的坐标
+                // var lng = data.lng //转换后的坐标
+                // var lat = data.lat//转换后的坐标
                 // addMarkImg(map, lng, lat, comCode, e);//添加标记
             } else {
                 showSuccessOrErrorModal(data.msg, "error");

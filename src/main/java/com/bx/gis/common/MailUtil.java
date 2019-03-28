@@ -12,7 +12,7 @@ import java.util.Random;
   * @Date 2019/2/22
   */
 public class MailUtil {
-    private static final String BX_CODE = "您好，感谢您使用伴行计调管理系统！此次验证码为：";
+    public static final String BX_CODE = "您好，感谢您使用伴行计调管理系统！此次验证码为：";
     /**
      * 发送邮件
      * @param to 给谁发

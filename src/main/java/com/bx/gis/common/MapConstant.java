@@ -66,4 +66,6 @@ public class MapConstant {
     public static final String SERVER_AK = "TyZ0AadANQFCotrdzl3wazPGMWw5cn2R";//bx
 
     public static final String BAIDU_LY = "https://lvyou.baidu.com/";//百度旅游前缀
+
+    public static final String BX_MAIL = "伴行平台"; //验证码
 }

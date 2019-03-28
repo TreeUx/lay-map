@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -40,7 +41,7 @@ public class SceneryInfoController {
     SceneryInfoService sceneryInfoService;
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String               ,               java.lang.Object>
      * @Author Breach
      * @Description 校验用户名密码
      * @Date 2019/2/15
@@ -77,22 +78,50 @@ public class SceneryInfoController {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> para = new HashMap<>();
         String scenery_name = request.getParameter("scenery_name");
+        String mapType = request.getParameter("mapType"); //地图类型
         String url = MapConstant.BAIDU_POI + MapConstant.BD_QUERY + scenery_name
                 + MapConstant.BD_REGION + scenery_name + MapConstant.BD_OUTPUT_AND_AK + MapConstant.SERVER_AK;
+        //谷歌请求地址
+        /*if ("gg-map".equals(mapType)) {
+            //google请求地址
+            String googleUrl = MapConstant.GOOGLE_PREFIX_URL + MapConstant.JSON_URL + scenery_name
+                    + MapConstant.GOOGLE_SUFFIX_URL + MapConstant.API_KEY;
+            System.out.println("谷歌请求地址为：" + googleUrl);
+            try {
+                JSONObject jo = RequestUtils.sendPost(googleUrl);
+                JSONArray jas = JSONArray.parseArray((jo.get("results").toString()));
+                JSONObject geometryJo = JSONObject.parseObject(JSONObject.parseObject(jas.get(0).toString()).get("geometry").toString());
+                JSONObject locaJo = JSONObject.parseObject(geometryJo.get("location").toString());
+                BigDecimal lng = new BigDecimal(locaJo.get("lng").toString()).setScale(6, BigDecimal.ROUND_HALF_UP);
+                BigDecimal lat = new BigDecimal(locaJo.get("lat").toString()).setScale(6, BigDecimal.ROUND_HALF_UP);
+                System.out.println("googleMapPoi is " + lat + "," + lng);
+                result.put("status", 200);
+                result.put("lng", lng == null ? 0 : lng);
+                result.put("lat", lat == null ? 0 : lat);
+            } catch (Exception e) {
+                result.put("status", "error");
+                result.put("msg", "获取谷歌地图失败");
+            }
+            return result;
+        }*/
         System.out.println(url);
         try {
-
             JSONObject jo = RequestUtils.sendPost(url);
             JSONArray jos = JSONObject.parseArray(jo.get("results").toString());
-            JSONObject locaJo = JSONObject.parseObject(JSONObject.parseObject(jos.get(0).toString()).get("location").toString());
-            String location = locaJo.get("lng") + "," + locaJo.get("lat");
-            result.put("status", 200);
-            result.put("lng", locaJo.get("lng") == null ? 0 : locaJo.get("lng"));
-            result.put("lat", locaJo.get("lat") == null ? 0 : locaJo.get("lat"));
-            result.put("location", location);
+            if (jos.size() == 0) {
+                result.put("status", "error");
+                result.put("msg", "未查询到地图信息");
+            } else {
+                JSONObject locaJo = JSONObject.parseObject(JSONObject.parseObject(jos.get(0).toString()).get("location").toString());
+                String location = locaJo.get("lng") + "," + locaJo.get("lat");
+                result.put("status", 200);
+                result.put("lng", locaJo.get("lng") == null ? 0 : locaJo.get("lng"));
+                result.put("lat", locaJo.get("lat") == null ? 0 : locaJo.get("lat"));
+                result.put("location", location);
+            }
         } catch (Exception e) {
-            result.put("status", 500);
-            result.put("error", "获取地图失败");
+            result.put("status", "error");
+            result.put("msg", "获取地图失败");
         }
         return result;
     }
@@ -129,7 +158,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
+     * @return java.util.Map<java.lang.String                               ,                               java.lang.Object>
      * @Author Breach
      * @Description 新增采集的景区单元信息
      * @Date 2019/1/3
@@ -275,7 +304,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
+     * @return java.util.Map<java.lang.String                               ,                               java.lang.Object>
      * @Author Breach
      * @Description 根据商品code查询出商品信息
      * @Date 2019/1/4
@@ -306,7 +335,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
+     * @return java.util.Map<java.lang.String                               ,                               java.lang.Object>
      * @Author Breach
      * @Description 删除采集的景点数据
      * @Date 2019/1/4
@@ -336,7 +365,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
+     * @return java.util.Map<java.lang.String                               ,                               java.lang.Object>
      * @Author Breach
      * @Description 根据搜索条件查询景区出入口信息
      * @Date 2019/1/7
@@ -363,7 +392,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
+     * @return java.util.Map<java.lang.String                               ,                               java.lang.Object>
      * @Author Breach
      * @Description 根据搜索条件查询景区出入口信息
      * @Date 2019/1/7
@@ -391,7 +420,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String   ,   java.lang.Object>
+     * @return java.util.Map<java.lang.String               ,               java.lang.Object>
      * @Author Breach
      * @Description 保存转换后的线路坐标信息
      * @Date 2019/1/9
@@ -441,7 +470,7 @@ public class SceneryInfoController {
     }
 
     /**
-     * @return java.util.Map<java.lang.String       ,       java.lang.Object>
+     * @return java.util.Map<java.lang.String                               ,                               java.lang.Object>
      * @Author Breach
      * @Description 根据景点Id查询景点内所有线路轨迹坐标信息
      * @Date 2019/1/7

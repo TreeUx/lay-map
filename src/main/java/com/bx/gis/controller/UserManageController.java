@@ -1,15 +1,14 @@
 package com.bx.gis.controller;
 
-import com.bx.gis.common.ImgMailUtil;
+import com.bx.gis.common.MailUtil;
+import com.bx.gis.common.MapConstant;
 import com.bx.gis.entity.UUser;
+import com.bx.gis.service.MailService;
 import com.bx.gis.service.UserManageService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +31,9 @@ public class UserManageController {
     private static Logger logger = LoggerFactory.getLogger(UserManageController.class);
     @Autowired
     UserManageService userManageService;
+
+    @Autowired
+    MailService mailService;
 
     /**
      * @Author Breach
@@ -351,7 +353,8 @@ public class UserManageController {
         user.setEmail(email);
         user.setEcode(mailCode);
         try {
-            bl = ImgMailUtil.send_mail(mailCode, email); //发送验证码到用户邮箱
+//            bl = MailUtil.send_mail(email, MailUtil.BX_CODE + mailCode); //发送验证码到用户邮箱
+            bl = mailService.sendSimpleMail(email, MapConstant.BX_MAIL, MailUtil.BX_CODE + mailCode); //发送验证码到用户邮箱
             if (bl) { //验证码发送到邮箱成功
                 int num = userManageService.sendAndSaveEcodeInfo(user);
                 if (num == 0) {
@@ -463,7 +466,8 @@ public class UserManageController {
         user.setOp_deptid(opDeptid); //设置运营部id
         user.setOperate_id(operateId); //计调部操作员id
         try {
-            bl = ImgMailUtil.send_mail(mailCode, email); //发送验证码到用户邮箱
+//            bl = MailUtil.send_mail(email, MailUtil.BX_CODE + mailCode); //发送验证码到用户邮箱
+            bl = mailService.sendSimpleMail(email, MapConstant.BX_MAIL, MailUtil.BX_CODE + mailCode); //发送验证码到用户邮箱
             if (bl) { //验证码发送到邮箱成功
                 int num = userManageService.saveFirstUserInfo(user); //保存用户注册信息
                 result.put("status", "200");

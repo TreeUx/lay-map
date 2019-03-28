@@ -173,3 +173,39 @@ function clear() {
     $("#com_best").val("") //重置游玩时间
     $("#scenery_remark").val("") //重置备注
 }
+
+//在地图上添加标记
+function addVectorLayer(map, lng, lat) {
+    /*1.首先创建空的矢量容器*/
+    var vectorSource = new ol.source.Vector({})
+    /*2.创建Feature，并添加进矢量容器中*/
+    //创建图标特性
+    var iconFeature = new ol.Feature({
+        geometry: new ol.geom.Point([lng, lat], "XY"),
+        name: "my Icon",
+    });
+    //将图标特性添加进矢量中
+    vectorSource.addFeature(iconFeature);
+    /*3.创建标记的样式*/
+    //创建图标样式
+    var iconStyle = new ol.style.Style({
+        image: new ol.style.Icon({
+            //控制标注图片和文字之间的距离
+            anchor: [0.5, 60],
+            //图标大小
+            size: [50, 50],
+            //偏移起点位置的方向
+            // offsetOrigin: 'top-right',
+            opacity: 0.75,
+            src: "/images/map1.png"
+        }),
+    });
+    /*4.创建矢量层，并添加进map层*/
+    //创建矢量层
+    var vectorLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: iconStyle
+    });
+    //添加进map层
+    map.addLayer(vectorLayer);
+}
