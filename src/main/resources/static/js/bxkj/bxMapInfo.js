@@ -65,35 +65,9 @@ $(function () {
             addRightMenu() //右键菜单
             /*调用地图 End*/
         }
-        /*添加点击标注后的右键菜单 Start*/
-        map.addEventListener('click', function(evt) {
-            var overlay = new ol.Overlay({
-                //设置弹出框的容器
-                element: container,
-                //是否自动平移，即假如标记在屏幕边缘，弹出时自动平移地图使弹出框完全可见
-                autoPan: true,
-                autoPanAnimation: {
-                    duration: 250   //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度. 单位为毫秒（ms）
-                }
-            });
-            coordinate = evt.coordinate;
-            var pixel = map.getEventPixel(evt.originalEvent);
-            map.forEachFeatureAtPixel(pixel, function (feature) {
-                console.log(feature)
-                /*var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-                    coordinate, 'EPSG:3857', 'EPSG:4326'));
-                content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code>';
-                overlay.setPosition(coordinate);
-                map.addOverlay(overlay);*/
 
-                overlay.setPosition(coordinate);
-                //显示overlay
-                map.addOverlay(overlay);
-                $("a").click(function () { //添加鼠标左键点击菜单项时，右键菜单隐藏
-                    overlay.setPosition(undefined);
-                })
-            })
-        });
+        /*添加点击标注后的右键菜单 Start*/
+        addClickListenEdit()
         /*添加点击标注后的右键菜单 End*/
 
     })
@@ -314,27 +288,29 @@ function queryMapInfo() {
     mapType = $("#map_type_sel").val() //地图类型
     var scenery_name = $("#input_name").val() //搜索名称
     var map_type = $("#map_type_sel option:selected").val() //地图类型
-    $.ajax({
-        url: "queryCenterPoi",
-        type: "post",
-        data: {
-            "scenery_name": scenery_name,
-            "mapType": mapType
-        },
-        dataType: "json",
-        success: function (data) {
-            if (data.status == 200) {
-                var lng = data.lng //获取百度地图经纬度
-                var lat = data.lat //获取百度地图经纬度
-                showSceneryInfoMap(lng, lat, map_type);//展示地图查询
-            } else {
-                showSuccessOrErrorModal(data.msg, "error");
+    if (scenery_name != "" && scenery_name != null) { //在搜索不为空的时候，进行查询
+        $.ajax({
+            url: "queryCenterPoi",
+            type: "post",
+            data: {
+                "scenery_name": scenery_name,
+                "mapType": mapType
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 200) {
+                    var lng = data.lng //获取百度地图经纬度
+                    var lat = data.lat //获取百度地图经纬度
+                    showSceneryInfoMap(lng, lat, map_type);//展示地图查询
+                } else {
+                    showSuccessOrErrorModal(data.msg, "error");
+                }
+            },
+            error: function (e) {
+                showSuccessOrErrorModal("网络异常！", "error");
             }
-        },
-        error: function (e) {
-            showSuccessOrErrorModal("网络异常！", "error");
-        }
-    })
+        })
+    }
 }
 
 //获取景区信息（搜索提示）
@@ -414,7 +390,14 @@ function showSceneryInfoMap(lng, lat, map_type) {
     /*调用地图 End*/
 
     /*添加点击标注后的右键菜单 Start*/
-    map.addEventListener('click', function(evt) {
+    addClickListenEdit()
+    /*添加点击标注后的右键菜单 End*/
+}
+
+// 添加点击标注后的右键菜单
+function addClickListenEdit() {
+    /*添加点击标注后的右键菜单 Start*/
+    map.addEventListener('click', function (evt) {
         var overlay = new ol.Overlay({
             //设置弹出框的容器
             element: container,
@@ -428,12 +411,6 @@ function showSceneryInfoMap(lng, lat, map_type) {
         var pixel = map.getEventPixel(evt.originalEvent);
         map.forEachFeatureAtPixel(pixel, function (feature) {
             console.log(feature)
-            /*var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-                coordinate, 'EPSG:3857', 'EPSG:4326'));
-            content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code>';
-            overlay.setPosition(coordinate);
-            map.addOverlay(overlay);*/
-
             overlay.setPosition(coordinate);
             //显示overlay
             map.addOverlay(overlay);
@@ -443,7 +420,6 @@ function showSceneryInfoMap(lng, lat, map_type) {
         })
     });
     /*添加点击标注后的右键菜单 End*/
-
 }
 
 /*function showSceneryInfoMap(scenery_name, map_type) {
