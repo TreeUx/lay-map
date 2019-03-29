@@ -9,10 +9,11 @@ var a = 6378245.0;
 var ee = 0.00669342162296594323;
 /*坐标转换需要的常量 End*/
 var enter_flag = true;
+var container = document.getElementById('popup'); //获取右键菜单div id
 /*右键菜单 Start*/
 var CONTENT = '<div id="contextmenu_container" class="contextmenu">' +
     '        <ul>' +
-    '            <li><a href="#" onclick="showAddModel()"">添加景点单元</a></li>' +
+    '            <li><a href="#" onclick="showAddModel()">添加景点单元</a></li>' +
     '            <li><a href="#">开始景区路线采集</a></li>' +
     '            <li><a href="#">景区路线采集完毕</a></li>' +
     '            <li><a href="#">取消该条路线</a></li>' +
@@ -64,6 +65,37 @@ $(function () {
             addRightMenu() //右键菜单
             /*调用地图 End*/
         }
+        /*添加点击标注后的右键菜单 Start*/
+        map.addEventListener('click', function(evt) {
+            var overlay = new ol.Overlay({
+                //设置弹出框的容器
+                element: container,
+                //是否自动平移，即假如标记在屏幕边缘，弹出时自动平移地图使弹出框完全可见
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250   //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度. 单位为毫秒（ms）
+                }
+            });
+            coordinate = evt.coordinate;
+            var pixel = map.getEventPixel(evt.originalEvent);
+            map.forEachFeatureAtPixel(pixel, function (feature) {
+                console.log(feature)
+                /*var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+                    coordinate, 'EPSG:3857', 'EPSG:4326'));
+                content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code>';
+                overlay.setPosition(coordinate);
+                map.addOverlay(overlay);*/
+
+                overlay.setPosition(coordinate);
+                //显示overlay
+                map.addOverlay(overlay);
+                $("a").click(function () { //添加鼠标左键点击菜单项时，右键菜单隐藏
+                    overlay.setPosition(undefined);
+                })
+            })
+        });
+        /*添加点击标注后的右键菜单 End*/
+
     })
     /*切换地图 End*/
     //展开、隐藏
@@ -113,7 +145,6 @@ $(function () {
                         }
                     })
                 }
-
             }, 10)
         }
     })
@@ -141,14 +172,17 @@ $(function () {
         }
     });
     /*点击标题添加样式 End*/
+
 });
+/*主函数End*/
 
 //地图添加右键菜单
 var coordinate //右键点击处的坐标信息
+var menu_overlay; //添加景点的右键菜单
 function addRightMenu() {
     // $("#bx_content").find("#contextmenu_container").remove()
     $("#bx_laymap").append(CONTENT)
-    var menu_overlay = new ol.Overlay({ //右键菜单
+    menu_overlay = new ol.Overlay({ //右键菜单
         element: document.getElementById("contextmenu_container"),
         positioning: 'center-center'
     });
@@ -378,6 +412,38 @@ function showSceneryInfoMap(lng, lat, map_type) {
     })
     addRightMenu() //右键菜单
     /*调用地图 End*/
+
+    /*添加点击标注后的右键菜单 Start*/
+    map.addEventListener('click', function(evt) {
+        var overlay = new ol.Overlay({
+            //设置弹出框的容器
+            element: container,
+            //是否自动平移，即假如标记在屏幕边缘，弹出时自动平移地图使弹出框完全可见
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250   //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度. 单位为毫秒（ms）
+            }
+        });
+        coordinate = evt.coordinate;
+        var pixel = map.getEventPixel(evt.originalEvent);
+        map.forEachFeatureAtPixel(pixel, function (feature) {
+            console.log(feature)
+            /*var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+                coordinate, 'EPSG:3857', 'EPSG:4326'));
+            content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code>';
+            overlay.setPosition(coordinate);
+            map.addOverlay(overlay);*/
+
+            overlay.setPosition(coordinate);
+            //显示overlay
+            map.addOverlay(overlay);
+            $("a").click(function () { //添加鼠标左键点击菜单项时，右键菜单隐藏
+                overlay.setPosition(undefined);
+            })
+        })
+    });
+    /*添加点击标注后的右键菜单 End*/
+
 }
 
 /*function showSceneryInfoMap(scenery_name, map_type) {
@@ -491,6 +557,7 @@ function saveNewSceneryInfo(e) {
                 var lng = data.lng
                 var lat = data.lat
                 addVectorLayer(map, lng, lat) //添加标记点
+                console.log(lng + "," + lat + "位置添加标注成功")
                 var comCode = data.comCode;//获取保存的景点的商品编码
                 // var lng = data.lng //转换后的坐标
                 // var lat = data.lat//转换后的坐标

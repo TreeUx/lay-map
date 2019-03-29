@@ -3,18 +3,18 @@
  */
 var container = document.getElementById('popup');
 var content = document.getElementById('popup-content');
-var closer = document.getElementById('popup-closer');
+// var closer = document.getElementById('popup-closer');
 var characterBl = false //判断是否选择资源特色
 
 /**
  * Add a click handler to hide the popup.
  * @return {boolean} Don't follow the href.
  */
-closer.onclick = function() {
+/*closer.onclick = function() {
     overlay.setPosition(undefined);
     closer.blur();
     return false;
-};
+};*/
 
 
 /**
@@ -28,19 +28,41 @@ var overlay = new ol.Overlay(/** @type {olx.OverlayOptions} */ ({
     }
 }));
 
-
 /**
  * Add a click handler to the map to render the popup.
  */
 var coordinate
-/*map.addEventListener('click', function(evt) {
+// var container = document.getElementById("popup");
+// var popup_content = document.getElementById("popup-content");
+// var popupCloser = document.getElementById("popup-closer");
+map.addEventListener('click', function(evt) {
+    var overlay = new ol.Overlay({
+        //设置弹出框的容器
+        element: container,
+        //是否自动平移，即假如标记在屏幕边缘，弹出时自动平移地图使弹出框完全可见
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250   //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度. 单位为毫秒（ms）
+        }
+    });
     coordinate = evt.coordinate;
-    var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-        coordinate, 'EPSG:3857', 'EPSG:4326'));
-    content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code>';
-    overlay.setPosition(coordinate);
-    map.addOverlay(overlay);
-});*/
+    var pixel = map.getEventPixel(evt.originalEvent);
+    map.forEachFeatureAtPixel(pixel, function (feature) {
+        console.log(feature)
+        /*var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+            coordinate, 'EPSG:3857', 'EPSG:4326'));
+        content.innerHTML = '<p>你点击的坐标是：</p><code>' + hdms + '</code>';
+        overlay.setPosition(coordinate);
+        map.addOverlay(overlay);*/
+
+        overlay.setPosition(coordinate);
+        //显示overlay
+        map.addOverlay(overlay);
+        $("a").click(function () { //添加鼠标左键点击菜单项时，右键菜单隐藏
+            overlay.setPosition(undefined);
+        })
+    })
+});
 
 /**
  * 展示添加景点单元模态框
@@ -107,7 +129,8 @@ $(function () {
         $("#modal-cstc").modal("hide") //隐藏特色星级模态框
         characterBl = true //判断是否点击进行特色星级选择
     })
-})
+
+})/*主函数End*/
 
 //展示特色星级选择模态框
 function showStarModal() {
@@ -191,13 +214,11 @@ function addVectorLayer(map, lng, lat) {
     var iconStyle = new ol.style.Style({
         image: new ol.style.Icon({
             //控制标注图片和文字之间的距离
-            anchor: [0.5, 60],
-            //图标大小
-            size: [50, 50],
+            // anchor: [0.5, 0.5],
             //偏移起点位置的方向
             // offsetOrigin: 'top-right',
             opacity: 0.75,
-            src: "/images/map1.png"
+            src: "/images/marker.jpg"
         }),
     });
     /*4.创建矢量层，并添加进map层*/
@@ -208,4 +229,4 @@ function addVectorLayer(map, lng, lat) {
     });
     //添加进map层
     map.addLayer(vectorLayer);
-}
+} //添加标记End

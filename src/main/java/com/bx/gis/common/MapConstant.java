@@ -67,5 +67,7 @@ public class MapConstant {
 
     public static final String BAIDU_LY = "https://lvyou.baidu.com/";//百度旅游前缀
 
+    public static final String BAIDU_POI = "http://api.map.baidu.com/place/v2/search?"; //openlayers
+
     public static final String BX_MAIL = "伴行平台"; //验证码
 }

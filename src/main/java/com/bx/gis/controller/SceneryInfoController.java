@@ -41,37 +41,12 @@ public class SceneryInfoController {
     SceneryInfoService sceneryInfoService;
 
     /**
-     * @return java.util.Map<java.lang.String               ,               java.lang.Object>
-     * @Author Breach
-     * @Description 校验用户名密码
-     * @Date 2019/2/15
-     * @Param
-     */
-   /* @RequestMapping("/check")
-    @ResponseBody
-    public Map<String, Object> checkInfo(HttpServletRequest request) {
-        Map<String, Object> result = new HashMap<>();
-        Map<String, Object> para = new HashMap<>();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        para.put("username", username);
-        para.put("password", password);
-        int num = sceneryInfoService.checkPsw(para); //校验用户名密码
-        if(num != 0) {
-            result.put("status", "200");
-            result.put("msg", "登录成功");
-        } else {
-            result.put("status", "500");
-            result.put("msg", "登录失败");
-        }
-        return result;
-    }*/
-
-   /* @RequestMapping("/index")
-    public String index(Model model) {
-        model.addAttribute("name", "景点数据采集");
-        return "bxlyMap";
-    }*/
+      * @Author Barton
+      * @Description 调用百度api查询城市坐标
+      * @Date 2019/3/28
+      * @Param request
+      * @return java.util.Map<java.lang.String,java.lang.Object>
+      */
     @RequestMapping("/queryCenterPoi")
     @ResponseBody
     public Map<String, Object> checkInfo(HttpServletRequest request) {
